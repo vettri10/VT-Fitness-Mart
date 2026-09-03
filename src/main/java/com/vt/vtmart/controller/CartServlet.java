@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-@WebServlet("/cart")
+
 public class CartServlet extends HttpServlet {
     private final CartDAO cartDAO = new CartDAO();
 

@@ -9,7 +9,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/orders")
+
 public class OrderServlet extends HttpServlet {
     private final OrderDAO orderDAO = new OrderDAO();
 

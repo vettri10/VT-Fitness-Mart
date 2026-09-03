@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-@WebServlet("/checkout")
+
 public class CheckoutServlet extends HttpServlet {
     private final CartDAO cartDAO = new CartDAO();
     private final OrderDAO orderDAO = new OrderDAO();

@@ -39,10 +39,10 @@
                 <c:choose>
                     <c:when test="${not empty sessionScope.currentUser}">
                         <span class="text-slate-400">Hi, <strong class="text-slate-100">${sessionScope.currentUser.name}</strong></span>
-                        <a href="${pageContext.request.contextPath}/auth?action=logout" class="text-rose-400 hover:text-rose-300">Logout</a>
+                        <a href="${pageContext.request.contextPath}/logout">Logout</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/auth/login.jsp" class="text-slate-300 hover:text-white">Sign In</a>
+                        <a href="${pageContext.request.contextPath}/logout" class="text-slate-300 hover:text-white">Sign In</a>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -103,5 +103,6 @@
     </footer>
 </body>
 </html>
+
 
 

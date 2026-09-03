@@ -19,7 +19,7 @@
             <div class="flex items-center gap-4 text-sm font-medium">
                 <a href="${pageContext.request.contextPath}/products" class="text-slate-300 hover:text-white">Shop</a>
                 <a href="${pageContext.request.contextPath}/cart" class="text-slate-300 hover:text-white">Cart</a>
-                <a href="${pageContext.request.contextPath}/auth?action=logout" class="text-rose-400 hover:text-rose-300">Logout</a>
+                <a href="${pageContext.request.contextPath}/logout">Logout</a>
             </div>
         </div>
     </header>
@@ -57,5 +57,6 @@
     </main>
 </body>
 </html>
+
 
 
