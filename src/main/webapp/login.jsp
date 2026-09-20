@@ -25,10 +25,14 @@
             <div class="p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-lg text-xs font-medium text-center">
                 Registration complete! You can now sign in below.
             </div>
+        <% } else if ("server_error".equals(request.getParameter("error"))) { %>
+            <div class="p-3 bg-rose-500/10 border border-rose-500/30 text-rose-400 rounded-lg text-xs font-medium text-center">
+                Server database issue. Please try again.
+            </div>
         <% } %>
 
-        <!-- Sign In Form with Dynamic Context Path -->
-        <form action="${pageContext.request.contextPath}/auth/login" method="POST" class="space-y-4">
+        <!-- Sign In Form: Uses clean relative action to trigger AuthServlet doPost -->
+        <form action="login" method="POST" class="space-y-4">
             <input type="hidden" name="action" value="login" />
             <div>
                 <label class="text-xs font-semibold uppercase text-slate-400">Email Address</label>
@@ -40,7 +44,7 @@
                 <input type="password" name="password" required placeholder="••••••••"
                        class="mt-1 w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-600" />
             </div>
-            <button type="submit" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg text-sm transition">
+            <button type="submit" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg text-sm transition cursor-pointer">
                 Sign In
             </button>
         </form>
