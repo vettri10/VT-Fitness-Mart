@@ -27,8 +27,8 @@
             </div>
         <% } %>
 
-        <!-- Sign In Form -->
-        <form action="/vtmart/auth/login" method="POST" class="space-y-4">
+        <!-- Sign In Form with Dynamic Context Path -->
+        <form action="${pageContext.request.contextPath}/auth/login" method="POST" class="space-y-4">
             <input type="hidden" name="action" value="login" />
             <div>
                 <label class="text-xs font-semibold uppercase text-slate-400">Email Address</label>
@@ -37,7 +37,7 @@
             </div>
             <div>
                 <label class="text-xs font-semibold uppercase text-slate-400">Password</label>
-                <input type="password" name="password" required placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                <input type="password" name="password" required placeholder="••••••••"
                        class="mt-1 w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-600" />
             </div>
             <button type="submit" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg text-sm transition">
