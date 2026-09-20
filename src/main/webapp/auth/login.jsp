@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-slate-950 text-slate-100">
 <head>
@@ -37,7 +37,7 @@
             </div>
             <div>
                 <label class="text-xs font-semibold uppercase text-slate-400">Password</label>
-                <input type="password" name="password" required placeholder="••••••••"
+                <input type="password" name="password" required placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                        class="mt-1 w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-600" />
             </div>
             <button type="submit" class="w-full py-2.5 bg-red-600 hover:bg-red-700 hover:bg-indigo-500 text-white font-semibold rounded-lg text-sm transition">

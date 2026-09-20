@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-slate-950 text-slate-100">
 <head>
@@ -11,7 +11,7 @@
 <body class="flex items-center justify-center min-h-full px-4 py-12">
     <div class="max-w-md w-full text-center bg-[#0d0d0d] border border-slate-800 p-8 rounded-3xl shadow-2xl space-y-6">
         <div class="w-16 h-16 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto text-2xl">
-            ✓
+            âœ“
         </div>
         <div>
             <h2 class="text-2xl font-bold text-white tracking-tight">Order Placed Successfully!</h2>

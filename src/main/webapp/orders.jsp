@@ -1,62 +1,68 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>VT Fitness | My Orders</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+    <title>VT Mart | My Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0b0f19; color: #f3f4f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .order-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; transition: transform 0.2s; }
+        .order-card:hover { border-color: #ef4444; }
+        .badge-status { background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #059669; }
+        .btn-store { background-color: #ef4444; border: none; font-weight: 600; border-radius: 8px; }
+        .btn-store:hover { background-color: #dc2626; }
+    </style>
 </head>
-<body class="flex flex-col min-h-full">
-    <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="${pageContext.request.contextPath}/products" class="flex items-center gap-2">
-                <span class="bg-red-600 hover:bg-red-700 text-white font-black text-xl px-2.5 py-1 rounded-lg">VT</span>
-                <span class="text-xl font-bold tracking-tight text-white">VT Fitness Mart</span>
-            </a>
-            <div class="flex items-center gap-4 text-sm font-medium">
-                <a href="${pageContext.request.contextPath}/products" class="text-slate-300 hover:text-white">Shop</a>
-                <a href="${pageContext.request.contextPath}/cart" class="text-slate-300 hover:text-white">Cart</a>
-                <a href="${pageContext.request.contextPath}/logout">Logout</a>
-            </div>
+<body class="py-5">
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-white mb-0"><span class="text-danger">VT</span>Mart Orders</h3>
+            <p class="text-secondary small mb-0">Your past purchases & orders</p>
         </div>
-    </header>
+        <div>
+            <a href="${pageContext.request.contextPath}/products" class="btn btn-outline-secondary me-2"><i class="fa-solid fa-store me-1"></i> Store</a>
+            <a href="${pageContext.request.contextPath}/cart" class="btn btn-outline-danger"><i class="fa-solid fa-cart-shopping me-1"></i> Cart</a>
+        </div>
+    </div>
 
-    <main class="flex-1 max-w-4xl w-full mx-auto px-6 py-10">
-        <h1 class="text-2xl font-bold text-white mb-6">Your Order History</h1>
-
-        <c:choose>
-            <c:when test="${empty orders}">
-                <div class="p-8 text-center bg-[#0d0d0d] border border-slate-800 rounded-2xl">
-                    <p class="text-slate-400">No past orders found.</p>
-                    <a href="${pageContext.request.contextPath}/products" class="mt-4 inline-block px-5 py-2 bg-red-600 hover:bg-red-700 hover:bg-indigo-500 text-white rounded-lg text-sm font-semibold">Start Shopping</a>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="space-y-4">
-                    <c:forEach var="o" items="${orders}">
-                        <div class="p-6 bg-[#0d0d0d] border border-slate-800 rounded-2xl flex items-center justify-between">
+    <c:choose>
+        <c:when test="${empty orders}">
+            <div class="text-center py-5">
+                <i class="fa-solid fa-box-open text-secondary fa-4x mb-3"></i>
+                <h4 class="text-white">No orders placed yet</h4>
+                <p class="text-secondary">Start exploring the gym store and place your first order.</p>
+                <a href="${pageContext.request.contextPath}/products" class="btn btn-store text-white px-4 py-2 mt-2">Shop Now</a>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="row g-4">
+                <c:forEach items="${orders}" var="ord">
+                    <div class="col-12">
+                        <div class="order-card p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
                             <div>
-                                <div class="flex items-center gap-3">
-                                    <span class="font-mono text-red-500 font-bold text-lg">#ORD-${o.id}</span>
-                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${o.status}</span>
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <span class="text-danger fw-bold fs-5">#ORD-${ord.id}</span>
+                                    <span class="badge badge-status px-2 py-1 small rounded-pill">${ord.status}</span>
                                 </div>
-                                <p class="text-xs text-slate-500 mt-1">Order placed successfully</p>
+                                <span class="text-secondary small">
+                                    <i class="fa-regular fa-clock me-1"></i>${ord.createdAt}
+                                </span>
                             </div>
-                            <div class="text-right">
-                                <span class="text-xs text-slate-500 uppercase">Total Amount</span>
-                                <p class="text-xl font-bold text-white">?${o.totalAmount}</p>
+                            <div class="text-end">
+                                <div class="text-secondary small">Total Paid</div>
+                                <div class="text-white fw-bold fs-4">Rs. ${ord.totalAmount}</div>
                             </div>
                         </div>
-                    </c:forEach>
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </main>
+                    </div>
+                </c:forEach>
+            </div>
+        </c:otherwise>
+    </c:choose>
+</div>
 </body>
 </html>
-
-
-

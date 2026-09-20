@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/cart/*", "/checkout/*", "/seller/*", "/admin/*"})
+@WebFilter(urlPatterns = {"/cart/*", "/checkout/*", "/orders/*", "/seller/*", "/admin/*"})
 public class AuthFilter implements Filter {
 
     @Override
@@ -18,7 +18,15 @@ public class AuthFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
 
-        User currentUser = (session != null) ? (User) session.getAttribute("currentUser") : null;
+        // Fallback checking: checks both "user" and "currentUser" to prevent null session drops
+        User currentUser = null;
+        if (session != null) {
+            currentUser = (User) session.getAttribute("user");
+            if (currentUser == null) {
+                currentUser = (User) session.getAttribute("currentUser");
+            }
+        }
+        
         String path = req.getRequestURI();
 
         if (currentUser == null) {
@@ -27,12 +35,12 @@ public class AuthFilter implements Filter {
         }
 
         // Role-Based Access Control
-        if (path.contains("/seller/") && !"SELLER".equals(currentUser.getRole()) && !"ADMIN".equals(currentUser.getRole())) {
+        if (path.contains("/seller/") && !"SELLER".equalsIgnoreCase(currentUser.getRole()) && !"ADMIN".equalsIgnoreCase(currentUser.getRole())) {
             res.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied: Seller role required.");
             return;
         }
 
-        if (path.contains("/admin/") && !"ADMIN".equals(currentUser.getRole())) {
+        if (path.contains("/admin/") && !"ADMIN".equalsIgnoreCase(currentUser.getRole())) {
             res.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied: Admin privileges required.");
             return;
         }

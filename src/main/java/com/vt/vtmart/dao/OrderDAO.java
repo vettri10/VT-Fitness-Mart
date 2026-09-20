@@ -113,4 +113,25 @@ public class OrderDAO {
         }
         return orders;
     }
+    public java.util.List<java.util.Map<String, Object>> findOrdersByUserId(long userId) {
+        java.util.List<java.util.Map<String, Object>> list = new java.util.ArrayList<>();
+        String sql = "SELECT * FROM orders WHERE user_id = ? ORDER BY id DESC";
+        try (java.sql.Connection conn = com.vt.vtmart.util.DBUtil.getConnection();
+             java.sql.PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, userId);
+            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    java.util.Map<String, Object> map = new java.util.HashMap<>();
+                    map.put("id", rs.getInt("id"));
+                    map.put("totalAmount", rs.getDouble("total_amount"));
+                    map.put("status", rs.getString("status"));
+                    map.put("createdAt", rs.getTimestamp("created_at"));
+                    list.add(map);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

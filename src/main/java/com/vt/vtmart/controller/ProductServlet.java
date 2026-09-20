@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-
+@WebServlet("/products")
 public class ProductServlet extends HttpServlet {
     private final ProductDAO productDAO = new ProductDAO();
 
