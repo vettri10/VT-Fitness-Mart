@@ -2,6 +2,7 @@ package com.vt.vtmart.controller;
 
 import com.vt.vtmart.dao.CartDAO;
 import com.vt.vtmart.model.CartItem;
+import com.vt.vtmart.model.Order;
 import com.vt.vtmart.model.User;
 import com.vt.vtmart.util.DBUtil;
 import jakarta.servlet.ServletException;
@@ -67,12 +68,18 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         long orderId = System.currentTimeMillis() % 100000;
+        if (orderId <= 0) {
+            orderId = 1001L;
+        }
+
+        String fullAddress = (address != null ? address : "") + ", " + (city != null ? city : "") + " - " + (pincode != null ? pincode : "");
+
         try (Connection conn = DBUtil.getConnection()) {
             String insertOrderSql = "INSERT INTO orders (user_id, total_amount, shipping_address, status) VALUES (?, ?, ?, ?)";
             try (PreparedStatement ps = conn.prepareStatement(insertOrderSql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setLong(1, userId);
                 ps.setBigDecimal(2, totalAmount);
-                ps.setString(3, (address != null ? address : "") + ", " + (city != null ? city : "") + " - " + (pincode != null ? pincode : ""));
+                ps.setString(3, fullAddress);
                 ps.setString(4, "CONFIRMED");
                 ps.executeUpdate();
                 try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -86,6 +93,15 @@ public class CheckoutServlet extends HttpServlet {
         cartDAO.clearCart(userId);
         session.removeAttribute("sessionCart");
 
+        // Order Model mapping so JSP gets both ${order.id} and direct ${orderId}
+        Order order = new Order();
+        order.setId(orderId);
+        order.setUserId(userId);
+        order.setTotalAmount(totalAmount);
+        order.setShippingAddress(fullAddress);
+        order.setStatus("CONFIRMED");
+
+        req.setAttribute("order", order);
         req.setAttribute("orderId", orderId);
         req.setAttribute("totalAmount", totalAmount);
         req.setAttribute("customerName", fullName != null ? fullName : "Customer");
