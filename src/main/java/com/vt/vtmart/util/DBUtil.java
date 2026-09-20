@@ -2,28 +2,23 @@ package com.vt.vtmart.util;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.stream.Collectors;
 
 public class DBUtil {
-    private static HikariDataSource dataSource;
+    private static volatile HikariDataSource dataSource;
+    private static boolean schemaInitialized = false;
 
     public static synchronized void initializePool() {
-        if (dataSource == null) {
-            // Permission safe user home directory (C:/Users/Bhara/vtmart_db)
-            String dbDir = System.getProperty("user.home") + File.separator + "vtmart_db";
-            File dir = new File(dbDir);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-            String dbPath = dbDir + File.separator + "vtmart";
-            // Forward slashes for JDBC URL compatibility
-            dbPath = dbPath.replace("\\", "/");
-
+        if (dataSource == null || dataSource.isClosed()) {
             HikariConfig config = new HikariConfig();
-            config.setJdbcUrl("jdbc:h2:file:" + dbPath + ";DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE");
+            config.setJdbcUrl("jdbc:h2:mem:vtmart_db;DB_CLOSE_DELAY=-1;MODE=MySQL");
             config.setDriverClassName("org.h2.Driver");
             config.setUsername("sa");
             config.setPassword("");
@@ -33,11 +28,34 @@ public class DBUtil {
             config.setConnectionTimeout(30000);
 
             dataSource = new HikariDataSource(config);
+            initDatabaseSchema();
+        }
+    }
+
+    private static void initDatabaseSchema() {
+        if (schemaInitialized) return;
+        try (Connection conn = dataSource.getConnection();
+             InputStream is = DBUtil.class.getClassLoader().getResourceAsStream("schema.sql")) {
+            
+            if (is != null) {
+                String sql = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
+                        .lines().collect(Collectors.joining("\n"));
+                
+                try (Statement stmt = conn.createStatement()) {
+                    stmt.execute(sql);
+                    schemaInitialized = true;
+                    System.out.println("VTMart Database schema and gym products initialized successfully!");
+                }
+            } else {
+                System.err.println("schema.sql not found in classpath!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public static Connection getConnection() throws SQLException {
-        if (dataSource == null) {
+        if (dataSource == null || dataSource.isClosed()) {
             initializePool();
         }
         return dataSource.getConnection();
