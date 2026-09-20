@@ -10,7 +10,6 @@
     String selectedCategory = request.getParameter("category");
     String selectedKeyword = request.getParameter("keyword");
 
-    // 40 Products as pure Maps (No constructor or method dependency)
     List<Map<String, String>> fullCatalog = new ArrayList<>();
 
     String[][] rawProducts = {
@@ -184,7 +183,7 @@
                             <div>
                                 <span class="text-lg font-bold text-white">&#8377; <%= p.get("price") %></span>
                             </div>
-                            <a href="<%= ctx %>/cart?action=add&productId=<%= p.get("id") %>" 
+                            <a href="<%= ctx %>/cart?action=add&productId=<%= p.get("id") %>&name=<%= java.net.URLEncoder.encode(p.get("name"), "UTF-8") %>&price=<%= p.get("price") %>" 
                                class="px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold rounded-lg text-xs transition flex items-center gap-1.5 shadow-lg shadow-red-600/20">
                                 <i class="fa-solid fa-cart-plus"></i> Add to Cart
                             </a>
