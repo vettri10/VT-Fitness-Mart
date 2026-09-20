@@ -28,7 +28,6 @@ public class AuthServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/products");
             return;
         }
-        // Direct JSP forward
         req.getRequestDispatcher("/login.jsp").forward(req, resp);
     }
 
@@ -42,15 +41,35 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
+        email = email.trim();
+        password = password.trim();
+
+        // 1. Instant fallback: Database slow-aa irundhalum login udane aagidum
+        if (("buyer@vtmart.com".equalsIgnoreCase(email) || "seller@vtmart.com".equalsIgnoreCase(email)) 
+                && "Password@123".equals(password)) {
+            User user = new User();
+            user.setId(1L);
+            user.setName("buyer@vtmart.com".equalsIgnoreCase(email) ? "Buyer Demo" : "Seller Demo");
+            user.setEmail(email);
+            user.setRole("buyer@vtmart.com".equalsIgnoreCase(email) ? "BUYER" : "SELLER");
+
+            HttpSession session = req.getSession(true);
+            session.setAttribute("user", user);
+            session.setAttribute("currentUser", user);
+
+            resp.sendRedirect(req.getContextPath() + "/products");
+            return;
+        }
+
+        // 2. Regular Database check
         try (Connection conn = DBUtil.getConnection()) {
             String sql = "SELECT id, name, email, password_hash, role FROM users WHERE LOWER(email) = LOWER(?)";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, email.trim());
+                ps.setString(1, email);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         String storedPassword = rs.getString("password_hash");
-                        // Direct match or default project fallback
-                        if (storedPassword.equals(password.trim()) || "Password@123".equals(password.trim())) {
+                        if (storedPassword.equals(password)) {
                             User user = new User();
                             user.setId(rs.getLong("id"));
                             user.setName(rs.getString("name"));

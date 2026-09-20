@@ -16,7 +16,6 @@
             <p class="text-sm text-slate-400 mt-1">Anna University Capstone Project Storefront</p>
         </div>
 
-        <!-- Feedback Messages -->
         <% if ("invalid_credentials".equals(request.getParameter("error"))) { %>
             <div class="p-3 bg-rose-500/10 border border-rose-500/30 text-rose-400 rounded-lg text-xs font-medium text-center">
                 Invalid email or password.
@@ -27,9 +26,8 @@
             </div>
         <% } %>
 
-        <!-- Sign In Form -->
-        <form action="/vtmart/auth/login" method="POST" class="space-y-4">
-            <input type="hidden" name="action" value="login" />
+        <!-- Direct POST to /login -->
+        <form action="/login" method="POST" class="space-y-4">
             <div>
                 <label class="text-xs font-semibold uppercase text-slate-400">Email Address</label>
                 <input type="email" name="email" required placeholder="buyer@vtmart.com"
@@ -37,10 +35,10 @@
             </div>
             <div>
                 <label class="text-xs font-semibold uppercase text-slate-400">Password</label>
-                <input type="password" name="password" required placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                <input type="password" name="password" required placeholder="••••••••"
                        class="mt-1 w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-600" />
             </div>
-            <button type="submit" class="w-full py-2.5 bg-red-600 hover:bg-red-700 hover:bg-indigo-500 text-white font-semibold rounded-lg text-sm transition">
+            <button type="submit" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg text-sm transition cursor-pointer">
                 Sign In
             </button>
         </form>
@@ -53,7 +51,3 @@
     </div>
 </body>
 </html>
-
-
-
-
