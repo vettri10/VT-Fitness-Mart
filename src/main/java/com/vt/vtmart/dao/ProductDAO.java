@@ -14,6 +14,22 @@ public class ProductDAO {
 
     private static synchronized void ensureProductsTableExists(Connection conn) {
         try (Statement stmt = conn.createStatement()) {
+            stmt.execute("CREATE TABLE IF NOT EXISTS users (" +
+                    "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                    "name VARCHAR(100) NOT NULL, " +
+                    "email VARCHAR(100) UNIQUE NOT NULL, " +
+                    "password_hash VARCHAR(255) NOT NULL, " +
+                    "role VARCHAR(20) DEFAULT 'BUYER', " +
+                    "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);");
+
+            try (ResultSet rsUser = stmt.executeQuery("SELECT COUNT(*) FROM users")) {
+                if (rsUser.next() && rsUser.getInt(1) == 0) {
+                    stmt.execute("INSERT INTO users (id, name, email, password_hash, role) VALUES " +
+                            "(1, 'Admin Coach', 'admin@vtmart.com', 'admin123', 'ADMIN'), " +
+                            "(2, 'Pro Fitness Seller', 'seller@vtmart.com', 'seller123', 'SELLER');");
+                }
+            }
+
             stmt.execute("CREATE TABLE IF NOT EXISTS products (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY, " +
                     "seller_id INT, " +
@@ -38,7 +54,8 @@ public class ProductDAO {
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error initializing products table: " + e.getMessage());
+            System.err.println("Error initializing tables: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -62,7 +79,6 @@ public class ProductDAO {
         sql.append("ORDER BY id DESC");
 
         try (Connection conn = DBUtil.getConnection()) {
-            // Guarantee table and gym equipment data exist before SELECT query runs
             ensureProductsTableExists(conn);
 
             try (PreparedStatement ps = conn.prepareStatement(sql.toString())) {
