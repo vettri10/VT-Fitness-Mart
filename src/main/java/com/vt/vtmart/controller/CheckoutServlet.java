@@ -2,6 +2,7 @@ package com.vt.vtmart.controller;
 
 import com.vt.vtmart.dao.CartDAO;
 import com.vt.vtmart.model.CartItem;
+import com.vt.vtmart.model.Order;
 import com.vt.vtmart.model.User;
 import com.vt.vtmart.util.DBUtil;
 import jakarta.servlet.ServletException;
@@ -18,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @WebServlet("/checkout")
@@ -68,6 +70,7 @@ public class CheckoutServlet extends HttpServlet {
         long orderId = (System.currentTimeMillis() % 90000) + 10000;
         String fullAddress = (address != null ? address : "") + ", " + (city != null ? city : "") + " - " + (pincode != null ? pincode : "");
 
+        // Try DB persistence
         try (Connection conn = DBUtil.getConnection()) {
             String insertOrderSql = "INSERT INTO orders (user_id, total_amount, shipping_address, status) VALUES (?, ?, ?, ?)";
             try (PreparedStatement ps = conn.prepareStatement(insertOrderSql, Statement.RETURN_GENERATED_KEYS)) {
@@ -84,10 +87,27 @@ public class CheckoutServlet extends HttpServlet {
             }
         } catch (Exception ignored) {}
 
+        // Save order inside Session so "My Orders" page displays it instantly
+        Order placedOrder = new Order();
+        placedOrder.setId(orderId);
+        placedOrder.setUserId(userId);
+        placedOrder.setTotalAmount(totalAmount);
+        placedOrder.setShippingAddress(fullAddress);
+        placedOrder.setStatus("CONFIRMED");
+        placedOrder.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
+
+        @SuppressWarnings("unchecked")
+        List<Order> sessionOrders = (List<Order>) session.getAttribute("sessionOrders");
+        if (sessionOrders == null) {
+            sessionOrders = new ArrayList<>();
+        }
+        sessionOrders.add(0, placedOrder); // Latest order first
+        session.setAttribute("sessionOrders", sessionOrders);
+
+        // Clear cart
         cartDAO.clearCart(userId);
         session.removeAttribute("sessionCart");
 
-        // Request forward pannama direct GET redirect with orderId
         resp.sendRedirect(req.getContextPath() + "/order_success.jsp?orderId=" + orderId);
     }
 }
