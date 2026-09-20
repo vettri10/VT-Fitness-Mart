@@ -31,8 +31,8 @@
             </div>
         <% } %>
 
-        <!-- Sign In Form: Uses clean relative action to trigger AuthServlet doPost -->
-        <form action="login" method="POST" class="space-y-4">
+        <!-- Sign In Form -->
+        <form action="<%= request.getContextPath() %>/login" method="POST" class="space-y-4">
             <input type="hidden" name="action" value="login" />
             <div>
                 <label class="text-xs font-semibold uppercase text-slate-400">Email Address</label>
