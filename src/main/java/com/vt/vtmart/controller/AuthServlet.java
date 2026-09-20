@@ -36,16 +36,16 @@ public class AuthServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
-            resp.sendRedirect(req.getContextPath() + "/auth/login?error=invalid_credentials");
+        if (email == null || password == null) {
+            resp.sendRedirect(req.getContextPath() + "/login?error=invalid_credentials");
             return;
         }
 
         email = email.trim();
         password = password.trim();
 
-        // 1. Instant fallback: Database slow-aa irundhalum login udane aagidum
-        if (("buyer@vtmart.com".equalsIgnoreCase(email) || "seller@vtmart.com".equalsIgnoreCase(email)) 
+        // 1. Direct Demo Bypass: buyer@vtmart.com / Password@123
+        if (("buyer@vtmart.com".equalsIgnoreCase(email) || "seller@vtmart.com".equalsIgnoreCase(email))
                 && "Password@123".equals(password)) {
             User user = new User();
             user.setId(1L);
@@ -61,7 +61,7 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
-        // 2. Regular Database check
+        // 2. Database check
         try (Connection conn = DBUtil.getConnection()) {
             String sql = "SELECT id, name, email, password_hash, role FROM users WHERE LOWER(email) = LOWER(?)";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -69,7 +69,7 @@ public class AuthServlet extends HttpServlet {
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         String storedPassword = rs.getString("password_hash");
-                        if (storedPassword.equals(password)) {
+                        if (storedPassword != null && storedPassword.equals(password)) {
                             User user = new User();
                             user.setId(rs.getLong("id"));
                             user.setName(rs.getString("name"));
@@ -86,10 +86,10 @@ public class AuthServlet extends HttpServlet {
                     }
                 }
             }
-            resp.sendRedirect(req.getContextPath() + "/auth/login?error=invalid_credentials");
+            resp.sendRedirect(req.getContextPath() + "/login?error=invalid_credentials");
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendRedirect(req.getContextPath() + "/auth/login?error=server_error");
+            resp.sendRedirect(req.getContextPath() + "/login?error=server_error");
         }
     }
 }
