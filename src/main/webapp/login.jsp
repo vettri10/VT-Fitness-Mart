@@ -31,20 +31,20 @@
             </div>
         <% } %>
 
-        <!-- Sign In Form -->
-        <form action="<%= request.getContextPath() %>/login" method="POST" class="space-y-4">
-            <input type="hidden" name="action" value="login" />
+        <!-- Form with explicit ID and direct POST to /login -->
+        <form id="loginForm" action="/login" method="POST" class="space-y-4">
             <div>
                 <label class="text-xs font-semibold uppercase text-slate-400">Email Address</label>
-                <input type="email" name="email" required placeholder="buyer@vtmart.com"
+                <input type="email" id="emailInput" name="email" required placeholder="buyer@vtmart.com"
                        class="mt-1 w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-600" />
             </div>
             <div>
                 <label class="text-xs font-semibold uppercase text-slate-400">Password</label>
-                <input type="password" name="password" required placeholder="••••••••"
+                <input type="password" id="passwordInput" name="password" required placeholder="••••••••"
                        class="mt-1 w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-600" />
             </div>
-            <button type="submit" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg text-sm transition cursor-pointer">
+            <button type="button" onclick="document.getElementById('loginForm').submit();"
+                    class="w-full py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold rounded-lg text-sm transition cursor-pointer">
                 Sign In
             </button>
         </form>
