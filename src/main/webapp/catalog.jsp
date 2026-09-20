@@ -210,14 +210,14 @@
                 const price = this.getAttribute('data-price');
                 const img = this.getAttribute('data-img');
 
-                let cart = JSON.parse(localStorage.getItem('vt_cart') || '[]');
+                let cart = JSON.parse(localStorage.getItem('vt_cart_items') || '[]');
                 let found = cart.find(item => item.id === id);
                 if (found) {
-                    found.quantity = (parseInt(found.quantity) || 1) + 1;
+                    found.qty = (parseInt(found.qty) || 1) + 1;
                 } else {
-                    cart.push({ id: id, name: name, price: price, img: img, quantity: 1 });
+                    cart.push({ id: id, name: name, price: parseFloat(price) || 0, img: img, qty: 1 });
                 }
-                localStorage.setItem('vt_cart', JSON.stringify(cart));
+                localStorage.setItem('vt_cart_items', JSON.stringify(cart));
                 window.location.href = '<%= ctx %>/cart.jsp';
             });
         });
