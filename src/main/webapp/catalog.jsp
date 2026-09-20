@@ -73,7 +73,6 @@
         fullCatalog.add(item);
     }
 
-    // Filter Logic
     List<Map<String, String>> displayList = new ArrayList<>();
     boolean hasCategory = selectedCategory != null && !selectedCategory.trim().isEmpty() && !"All".equalsIgnoreCase(selectedCategory.trim());
     boolean hasKeyword = selectedKeyword != null && !selectedKeyword.trim().isEmpty();
@@ -121,7 +120,7 @@
             </form>
 
             <div class="flex items-center gap-4 text-xs font-semibold">
-                <a href="<%= ctx %>/cart" class="flex items-center gap-1 text-slate-300 hover:text-white transition">
+                <a href="<%= ctx %>/cart.jsp" class="flex items-center gap-1 text-slate-300 hover:text-white transition">
                     <i class="fa-solid fa-cart-shopping text-red-500"></i> Cart
                 </a>
                 <a href="<%= ctx %>/orders" class="flex items-center gap-1 text-slate-300 hover:text-white transition">
@@ -183,10 +182,14 @@
                             <div>
                                 <span class="text-lg font-bold text-white">&#8377; <%= p.get("price") %></span>
                             </div>
-                            <a href="<%= ctx %>/cart?action=add&productId=<%= p.get("id") %>&name=<%= java.net.URLEncoder.encode(p.get("name"), "UTF-8") %>&price=<%= p.get("price") %>" 
-                               class="px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold rounded-lg text-xs transition flex items-center gap-1.5 shadow-lg shadow-red-600/20">
+                            <button type="button"
+                                    class="add-btn px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold rounded-lg text-xs transition flex items-center gap-1.5 shadow-lg shadow-red-600/20"
+                                    data-id="<%= p.get("id") %>"
+                                    data-name="<%= p.get("name") %>"
+                                    data-price="<%= p.get("price") %>"
+                                    data-img="<%= imgName %>">
                                 <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -199,5 +202,25 @@
         &copy; 2026 VT Fitness Mart - Anna University Capstone Project
     </footer>
 
+    <script>
+        document.querySelectorAll('.add-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const price = this.getAttribute('data-price');
+                const img = this.getAttribute('data-img');
+
+                let cart = JSON.parse(localStorage.getItem('vt_cart') || '[]');
+                let found = cart.find(item => item.id === id);
+                if (found) {
+                    found.quantity = (parseInt(found.quantity) || 1) + 1;
+                } else {
+                    cart.push({ id: id, name: name, price: price, img: img, quantity: 1 });
+                }
+                localStorage.setItem('vt_cart', JSON.stringify(cart));
+                window.location.href = '<%= ctx %>/cart.jsp';
+            });
+        });
+    </script>
 </body>
 </html>
