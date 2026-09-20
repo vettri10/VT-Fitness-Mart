@@ -7,7 +7,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/products")
@@ -19,7 +21,27 @@ public class ProductServlet extends HttpServlet {
         String category = req.getParameter("category");
         String keyword = req.getParameter("keyword");
 
-        List<Product> catalog = productDAO.searchProducts(category, keyword);
+        // Fetch all products from DAO
+        List<Product> all = productDAO.getAllProducts();
+        List<Product> catalog = new ArrayList<>();
+
+        boolean filterCat = category != null && !category.trim().isEmpty() && !"All".equalsIgnoreCase(category.trim());
+        boolean filterKey = keyword != null && !keyword.trim().isEmpty();
+
+        String kw = filterKey ? keyword.trim().toLowerCase() : "";
+        String cat = filterCat ? category.trim().toLowerCase() : "";
+
+        if (all != null) {
+            for (Product p : all) {
+                boolean matchesCat = !filterCat || (p.getCategory() != null && p.getCategory().toLowerCase().equals(cat));
+                boolean matchesKey = !filterKey || ((p.getName() != null && p.getName().toLowerCase().contains(kw)) ||
+                                                    (p.getDescription() != null && p.getDescription().toLowerCase().contains(kw)));
+
+                if (matchesCat && matchesKey) {
+                    catalog.add(p);
+                }
+            }
+        }
         
         req.setAttribute("catalog", catalog);
         req.setAttribute("selectedCategory", category);
