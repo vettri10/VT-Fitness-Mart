@@ -1,5 +1,6 @@
 package com.vt.vtmart.controller;
 
+import com.vt.vtmart.dao.CartDAO;
 import com.vt.vtmart.model.CartItem;
 import com.vt.vtmart.model.User;
 import com.vt.vtmart.util.DBUtil;
@@ -22,6 +23,8 @@ import java.util.List;
 @WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {
 
+    private final CartDAO cartDAO = new CartDAO();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.sendRedirect(req.getContextPath() + "/cart");
@@ -41,10 +44,15 @@ public class CheckoutServlet extends HttpServlet {
         String city = req.getParameter("city");
         String pincode = req.getParameter("pincode");
 
-        @SuppressWarnings("unchecked")
-        List<CartItem> cartItems = (List<CartItem>) session.getAttribute("sessionCart");
-        if (cartItems == null) {
-            cartItems = new ArrayList<>();
+        List<CartItem> cartItems = cartDAO.getCartByUser(userId);
+        if (cartItems == null || cartItems.isEmpty()) {
+            @SuppressWarnings("unchecked")
+            List<CartItem> sessionCart = (List<CartItem>) session.getAttribute("sessionCart");
+            if (sessionCart != null) {
+                cartItems = sessionCart;
+            } else {
+                cartItems = new ArrayList<>();
+            }
         }
 
         BigDecimal totalAmount = BigDecimal.ZERO;
@@ -73,14 +81,9 @@ public class CheckoutServlet extends HttpServlet {
                     }
                 }
             }
-            try (PreparedStatement psClear = conn.prepareStatement("DELETE FROM cart_items WHERE user_id = ?")) {
-                psClear.setLong(1, userId);
-                psClear.executeUpdate();
-            } catch (Exception ignored) {}
-        } catch (Exception e) {
-            // Log notice only; fallback prevents 500 error
-        }
+        } catch (Exception ignored) {}
 
+        cartDAO.clearCart(userId);
         session.removeAttribute("sessionCart");
 
         req.setAttribute("orderId", orderId);
