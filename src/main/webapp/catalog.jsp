@@ -121,13 +121,10 @@
                             </div>
                             <div class="mt-6 flex items-center justify-between">
                                 <span class="text-lg font-bold text-white">&#8377; <%= product.getPrice() %></span>
-                                <form action="<%= ctx %>/cart" method="POST">
-                                    <input type="hidden" name="action" value="add">
-                                    <input type="hidden" name="productId" value="<%= product.getId() %>">
-                                    <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold transition">
-                                        Add to Cart
-                                    </button>
-                                </form>
+                                <a href="<%= ctx %>/cart?action=add&productId=<%= product.getId() %>" 
+                                   class="px-4 py-2 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-1.5">
+                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                                </a>
                             </div>
                         </div>
                     </div>
