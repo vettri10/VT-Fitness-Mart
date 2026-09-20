@@ -2,14 +2,13 @@ package com.vt.vtmart.util;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import java.io.BufferedReader;
+import org.h2.tools.RunScript;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.stream.Collectors;
 
 public class DBUtil {
     private static volatile HikariDataSource dataSource;
@@ -32,24 +31,20 @@ public class DBUtil {
         }
     }
 
-    private static void initDatabaseSchema() {
+    private static synchronized void initDatabaseSchema() {
         if (schemaInitialized) return;
         try (Connection conn = dataSource.getConnection();
              InputStream is = DBUtil.class.getClassLoader().getResourceAsStream("schema.sql")) {
-            
+
             if (is != null) {
-                String sql = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
-                        .lines().collect(Collectors.joining("\n"));
-                
-                try (Statement stmt = conn.createStatement()) {
-                    stmt.execute(sql);
-                    schemaInitialized = true;
-                    System.out.println("VTMart Database schema and gym products initialized successfully!");
-                }
+                RunScript.execute(conn, new InputStreamReader(is, StandardCharsets.UTF_8));
+                schemaInitialized = true;
+                System.out.println("VTMart Database initialized with all tables and gym products via RunScript!");
             } else {
-                System.err.println("schema.sql not found in classpath!");
+                System.err.println("CRITICAL: schema.sql NOT found in classpath!");
             }
         } catch (Exception e) {
+            System.err.println("Failed to initialize database schema: " + e.getMessage());
             e.printStackTrace();
         }
     }

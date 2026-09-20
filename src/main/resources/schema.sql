@@ -1,4 +1,8 @@
-﻿DROP ALL OBJECTS;
+﻿DROP TABLE IF EXISTS order_items CASCADE;
+DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS cart_items CASCADE;
+DROP TABLE IF EXISTS products CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,7 +30,8 @@ CREATE TABLE cart_items (
     user_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT DEFAULT 1,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE orders (
@@ -35,7 +40,8 @@ CREATE TABLE orders (
     total_amount DECIMAL(10, 2) NOT NULL,
     shipping_address TEXT DEFAULT 'Standard Express Delivery Address',
     status VARCHAR(30) DEFAULT 'PENDING',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE order_items (
@@ -55,12 +61,14 @@ INSERT INTO users (id, name, email, password_hash, role) VALUES
 (4, 'Iron Beast', 'user@vtmart.com', 'user123', 'BUYER'),
 (5, 'Test Customer', 'customer@vtmart.com', 'customer123', 'CUSTOMER');
 
+ALTER TABLE users ALTER COLUMN id RESTART WITH 6;
+
 INSERT INTO products (id, seller_id, name, description, category, price, stock_qty, image_url) VALUES
 (1, 2, 'Rubber Hex Dumbbell Set (20kg)', 'Durable cast iron hex dumbbells with ergonomic chrome handles and rubber coating.', 'Free Weights', 4499.00, 25, 'https://images.unsplash.com/photo-1638805981949-3a152e93d8b5?w=800'),
 (2, 2, 'Commercial Motorized Treadmill', '3.5 HP AC motor treadmill with auto-incline, shock absorption, and LED display console.', 'Machines', 54999.00, 5, 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800'),
 (3, 2, 'Olympic Barbell 20kg (7ft)', 'High-tensile steel barbell with 1500lb capacity and needle bearings for smooth spin.', 'Free Weights', 7999.00, 15, 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800'),
 (4, 2, 'Heavy-Duty Power Rack Cage', 'Solid steel power cage with safety spotters, multi-grip pull-up bar, and J-hooks.', 'Machines', 24999.00, 8, 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800'),
-(5, 2, 'Adjustable Workout Bench (FID)', 'Multi-angle Flat, Incline, and Decline workout bench with high-density padding.', 'Benches', 6499.00, 20, 'images/bench.jpg'),
+(5, 2, 'Adjustable Workout Bench (FID)', 'Multi-angle Flat, Incline, and Decline workout bench with high-density padding.', 'Benches', 6499.00, 20, 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800'),
 (6, 2, 'Resistance Bands Set (5 Levels)', 'Premium latex exercise loop bands with handles, door anchor, and carry pouch.', 'Accessories', 999.00, 40, 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800'),
 (7, 2, 'Cast Iron Kettlebell 16kg', 'Ergonomic wide grip textured kettlebell for crossfit swings, snatches, and conditioning.', 'Free Weights', 2799.00, 30, 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800'),
 (8, 2, 'Olympic Bumper Plates Set (50kg)', 'High-density natural virgin rubber bumper weight plates for heavy deadlifts and drops.', 'Free Weights', 12999.00, 12, 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=800'),
@@ -75,8 +83,10 @@ INSERT INTO products (id, seller_id, name, description, category, price, stock_q
 (17, 2, 'Deep Tissue Grid Foam Roller', 'High-density trigger point massage grid roller for myofascial back and leg release.', 'Accessories', 899.00, 40, 'https://images.unsplash.com/photo-1607962837359-5e7e89f86776?w=800'),
 (18, 2, 'Heavy-Duty Battle Rope (15m)', '1.5 inch thick poly dacron conditioning wave rope with protective durable sleeve.', 'Accessories', 3699.00, 15, 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800'),
 (19, 2, 'EZ Curl Barbell Bar (Chrome)', 'Ergonomic zig-zag angled steel barbell designed to protect wrists during bicep curls.', 'Free Weights', 2499.00, 22, 'https://images.unsplash.com/photo-1586401100295-7a8096fd231a?w=800'),
-(20, 2, 'Multi-Grip Wall Mount Pull-Up Bar', 'Heavy gauge solid steel wall-mounted pull-up station with foam padded ergonomic grips.', 'Machines', 2199.00, 35, 'images/pullupbar.jpg'),
-(21, 2, 'Gymnastic Wooden Ring Set', 'Textured birch wood gymnastic rings with heavy-duty numbered adjustable straps.', 'Accessories', 1999.00, 20, 'images/rings.jpg'),
+(20, 2, 'Multi-Grip Wall Mount Pull-Up Bar', 'Heavy gauge solid steel wall-mounted pull-up station with foam padded ergonomic grips.', 'Machines', 2199.00, 35, 'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=800'),
+(21, 2, 'Gymnastic Wooden Ring Set', 'Textured birch wood gymnastic rings with heavy-duty numbered adjustable straps.', 'Accessories', 1999.00, 20, 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800'),
 (22, 2, 'Heavy Duty Sissy Squat Bench', 'Solid compact deep-squat leg developer bench with adjustable calf and foot pads.', 'Benches', 7499.00, 12, 'https://images.unsplash.com/photo-1590487988256-9ed24133863e?w=800'),
 (23, 2, 'Adjustable Iron Weight Vest (20kg)', 'Form-fitting tactical weighted vest with removable iron blocks for bodyweight training.', 'Accessories', 3999.00, 15, 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800'),
-(24, 2, 'Olympic Barbell Quick Collars', 'Durable nylon resin clamp collars with rubber padding for fast barbell plate locking.', 'Accessories', 699.00, 90, 'images/collars.jpg');
+(24, 2, 'Olympic Barbell Quick Collars', 'Durable nylon resin clamp collars with rubber padding for fast barbell plate locking.', 'Accessories', 699.00, 90, 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800');
+
+ALTER TABLE products ALTER COLUMN id RESTART WITH 25;
