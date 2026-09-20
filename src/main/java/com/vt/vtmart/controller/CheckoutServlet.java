@@ -2,7 +2,6 @@ package com.vt.vtmart.controller;
 
 import com.vt.vtmart.dao.CartDAO;
 import com.vt.vtmart.model.CartItem;
-import com.vt.vtmart.model.Order;
 import com.vt.vtmart.model.User;
 import com.vt.vtmart.util.DBUtil;
 import jakarta.servlet.ServletException;
@@ -40,7 +39,6 @@ public class CheckoutServlet extends HttpServlet {
         }
         long userId = (user != null) ? user.getId() : 1L;
 
-        String fullName = req.getParameter("fullName");
         String address = req.getParameter("deliveryAddress");
         String city = req.getParameter("city");
         String pincode = req.getParameter("pincode");
@@ -67,11 +65,7 @@ public class CheckoutServlet extends HttpServlet {
             totalAmount = new BigDecimal("999.00");
         }
 
-        long orderId = System.currentTimeMillis() % 100000;
-        if (orderId <= 0) {
-            orderId = 1001L;
-        }
-
+        long orderId = (System.currentTimeMillis() % 90000) + 10000;
         String fullAddress = (address != null ? address : "") + ", " + (city != null ? city : "") + " - " + (pincode != null ? pincode : "");
 
         try (Connection conn = DBUtil.getConnection()) {
@@ -93,19 +87,7 @@ public class CheckoutServlet extends HttpServlet {
         cartDAO.clearCart(userId);
         session.removeAttribute("sessionCart");
 
-        // Order Model mapping so JSP gets both ${order.id} and direct ${orderId}
-        Order order = new Order();
-        order.setId(orderId);
-        order.setUserId(userId);
-        order.setTotalAmount(totalAmount);
-        order.setShippingAddress(fullAddress);
-        order.setStatus("CONFIRMED");
-
-        req.setAttribute("order", order);
-        req.setAttribute("orderId", orderId);
-        req.setAttribute("totalAmount", totalAmount);
-        req.setAttribute("customerName", fullName != null ? fullName : "Customer");
-
-        req.getRequestDispatcher("/order_success.jsp").forward(req, resp);
+        // Request forward pannama direct GET redirect with orderId
+        resp.sendRedirect(req.getContextPath() + "/order_success.jsp?orderId=" + orderId);
     }
 }

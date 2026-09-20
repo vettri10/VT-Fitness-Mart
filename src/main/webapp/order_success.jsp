@@ -1,19 +1,8 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.vt.vtmart.model.Order" %>
 <%
-    Object orderObj = request.getAttribute("order");
-    Object orderIdObj = request.getAttribute("orderId");
-    
-    String displayOrderId = null;
-    if (orderObj instanceof Order) {
-        displayOrderId = String.valueOf(((Order) orderObj).getId());
-    } else if (orderIdObj != null) {
-        displayOrderId = String.valueOf(orderIdObj);
-    }
-    
-    // Fallback: If null, generate clean timestamp ID
-    if (displayOrderId == null || "null".equalsIgnoreCase(displayOrderId) || displayOrderId.trim().isEmpty()) {
-        displayOrderId = String.valueOf(System.currentTimeMillis() % 100000);
+    String orderId = request.getParameter("orderId");
+    if (orderId == null || orderId.trim().isEmpty() || "null".equalsIgnoreCase(orderId)) {
+        orderId = String.valueOf((System.currentTimeMillis() % 90000) + 10000);
     }
 %>
 <!DOCTYPE html>
@@ -30,7 +19,6 @@
 <body class="flex items-center justify-center min-h-full px-4 py-12">
     <div class="max-w-md w-full bg-[#0b0c10]/95 border border-slate-800 p-8 rounded-2xl text-center shadow-2xl space-y-6">
         
-        <!-- Success Icon -->
         <div class="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto text-2xl">
             <i class="fa-solid fa-check"></i>
         </div>
@@ -40,13 +28,11 @@
             <p class="text-xs text-slate-400">Mock payment processed. Your order has been registered.</p>
         </div>
 
-        <!-- Order ID Card -->
         <div class="bg-slate-950/80 border border-slate-800/80 rounded-xl p-4">
-            <p class="text-[11px] font-semibold tracking-wider uppercase text-slate-500">Generated Order ID</p>
-            <p class="text-lg font-bold text-red-500 font-mono mt-1">#ORD-<%= displayOrderId %></p>
+            <p class="text-[11px] font-semibold tracking-wider uppercase text-slate-500">GENERATED ORDER ID</p>
+            <p class="text-lg font-bold text-red-500 font-mono mt-1">#ORD-<%= orderId %></p>
         </div>
 
-        <!-- Continue Button -->
         <a href="${pageContext.request.contextPath}/products" 
            class="block w-full py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold rounded-lg text-sm transition">
             Continue Shopping
