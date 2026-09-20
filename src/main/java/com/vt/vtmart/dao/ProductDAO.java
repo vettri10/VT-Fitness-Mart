@@ -2,108 +2,137 @@ package com.vt.vtmart.dao;
 
 import com.vt.vtmart.model.Product;
 import com.vt.vtmart.util.DBUtil;
+
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
 
-    private static synchronized void ensureProductsTableExists(Connection conn) {
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute("CREATE TABLE IF NOT EXISTS users (" +
-                    "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                    "name VARCHAR(100) NOT NULL, " +
-                    "email VARCHAR(100) UNIQUE NOT NULL, " +
-                    "password_hash VARCHAR(255) NOT NULL, " +
-                    "role VARCHAR(20) DEFAULT 'BUYER', " +
-                    "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);");
-
-            try (ResultSet rsUser = stmt.executeQuery("SELECT COUNT(*) FROM users")) {
-                if (rsUser.next() && rsUser.getInt(1) == 0) {
-                    stmt.execute("INSERT INTO users (id, name, email, password_hash, role) VALUES " +
-                            "(1, 'Admin Coach', 'admin@vtmart.com', 'admin123', 'ADMIN'), " +
-                            "(2, 'Pro Fitness Seller', 'seller@vtmart.com', 'seller123', 'SELLER');");
-                }
-            }
-
-            stmt.execute("CREATE TABLE IF NOT EXISTS products (" +
-                    "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                    "seller_id INT, " +
-                    "name VARCHAR(150) NOT NULL, " +
-                    "description TEXT, " +
-                    "category VARCHAR(50), " +
-                    "price DECIMAL(10, 2) NOT NULL, " +
-                    "stock_qty INT NOT NULL, " +
-                    "image_url VARCHAR(500), " +
-                    "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);");
-
-            try (ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM products")) {
-                if (rs.next() && rs.getInt(1) == 0) {
-                    stmt.execute("INSERT INTO products (id, seller_id, name, description, category, price, stock_qty, image_url) VALUES " +
-                            "(1, 2, 'Rubber Hex Dumbbell Set (20kg)', 'Durable cast iron hex dumbbells with ergonomic chrome handles.', 'Free Weights', 4499.00, 25, 'https://images.unsplash.com/photo-1638805981949-3a152e93d8b5?w=800'), " +
-                            "(2, 2, 'Commercial Motorized Treadmill', '3.5 HP AC motor treadmill with auto-incline and shock absorption.', 'Machines', 54999.00, 5, 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800'), " +
-                            "(3, 2, 'Olympic Barbell 20kg (7ft)', 'High-tensile steel barbell with 1500lb capacity and needle bearings.', 'Free Weights', 7999.00, 15, 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800'), " +
-                            "(4, 2, 'Heavy-Duty Power Rack Cage', 'Solid steel power cage with safety spotters and multi-grip pull-up bar.', 'Machines', 24999.00, 8, 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800'), " +
-                            "(5, 2, 'Adjustable Workout Bench (FID)', 'Multi-angle Flat, Incline, and Decline workout bench.', 'Benches', 6499.00, 20, 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800'), " +
-                            "(6, 2, 'Resistance Bands Set (5 Levels)', 'Premium latex exercise loop bands with handles and door anchor.', 'Accessories', 999.00, 40, 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800'), " +
-                            "(7, 2, 'Cast Iron Kettlebell 16kg', 'Ergonomic wide grip textured kettlebell for crossfit swings.', 'Free Weights', 2799.00, 30, 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800');");
-                }
+    public List<Product> getAllProducts() {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT id, name, description, price, category, image_url FROM products";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Product p = new Product();
+                p.setId(rs.getLong("id"));
+                p.setName(rs.getString("name"));
+                p.setDescription(rs.getString("description"));
+                p.setPrice(rs.getBigDecimal("price"));
+                p.setCategory(rs.getString("category"));
+                p.setImageUrl(rs.getString("image_url"));
+                list.add(p);
             }
         } catch (Exception e) {
-            System.err.println("Error initializing tables: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("ProductDAO DB Notice: " + e.getMessage());
         }
+
+        // DB-la 40 items illanaalum guaranteed-aa 40 products load panna fallback
+        if (list.size() < 15) {
+            return getFortyProductsList();
+        }
+        return list;
     }
 
-    public List<Product> searchProducts(String category, String keyword) {
-        List<Product> products = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT id, seller_id, name, description, category, price, stock_qty, image_url, created_at FROM products WHERE stock_qty > 0 ");
-        List<Object> params = new ArrayList<>();
-
-        if (category != null && !category.trim().isEmpty() && !category.equalsIgnoreCase("all")) {
-            sql.append("AND category = ? ");
-            params.add(category.trim());
+    public List<Product> getProductsByCategory(String category) {
+        List<Product> all = getAllProducts();
+        if (category == null || category.trim().isEmpty() || "All".equalsIgnoreCase(category)) {
+            return all;
         }
-
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            sql.append("AND (LOWER(name) LIKE ? OR LOWER(description) LIKE ?) ");
-            String term = "%" + keyword.trim().toLowerCase() + "%";
-            params.add(term);
-            params.add(term);
-        }
-
-        sql.append("ORDER BY id DESC");
-
-        try (Connection conn = DBUtil.getConnection()) {
-            ensureProductsTableExists(conn);
-
-            try (PreparedStatement ps = conn.prepareStatement(sql.toString())) {
-                for (int i = 0; i < params.size(); i++) {
-                    ps.setObject(i + 1, params.get(i));
-                }
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        Product p = new Product();
-                        p.setId(rs.getLong("id"));
-                        p.setSellerId(rs.getLong("seller_id"));
-                        p.setName(rs.getString("name"));
-                        p.setDescription(rs.getString("description"));
-                        p.setCategory(rs.getString("category"));
-                        p.setPrice(rs.getBigDecimal("price"));
-                        p.setStockQty(rs.getInt("stock_qty"));
-                        p.setImageUrl(rs.getString("image_url"));
-                        p.setCreatedAt(rs.getTimestamp("created_at"));
-                        products.add(p);
-                    }
-                }
+        List<Product> filtered = new ArrayList<>();
+        for (Product p : all) {
+            if (category.equalsIgnoreCase(p.getCategory())) {
+                filtered.add(p);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error executing product search query", e);
         }
-        return products;
+        return filtered;
+    }
+
+    public List<Product> searchProducts(String keyword) {
+        List<Product> all = getAllProducts();
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return all;
+        }
+        String kw = keyword.toLowerCase();
+        List<Product> filtered = new ArrayList<>();
+        for (Product p : all) {
+            if ((p.getName() != null && p.getName().toLowerCase().contains(kw)) ||
+                (p.getDescription() != null && p.getDescription().toLowerCase().contains(kw)) ||
+                (p.getCategory() != null && p.getCategory().toLowerCase().contains(kw))) {
+                filtered.add(p);
+            }
+        }
+        return filtered;
+    }
+
+    private List<Product> getFortyProductsList() {
+        List<Product> pList = new ArrayList<>();
+        long id = 1;
+
+        // --- FREE WEIGHTS (10 items) ---
+        pList.add(createP(id++, "Cast Iron Kettlebell 16kg", "Ergonomic wide grip textured kettlebell for crossfit swings.", "2799.00", "Free Weights", "collars.jpg"));
+        pList.add(createP(id++, "Olympic Barbell 20kg (7ft)", "High-tensile steel barbell with 1500lb capacity and needle bearings.", "7999.00", "Free Weights", "collars.jpg"));
+        pList.add(createP(id++, "Rubber Hex Dumbbell Set (20kg)", "Durable cast iron hex dumbbells with ergonomic chrome handles.", "4499.00", "Free Weights", "collars.jpg"));
+        pList.add(createP(id++, "Cast Iron Dumbbell Pair (10kg)", "Heavy-duty textured grip dumbbells for upper body workout.", "1899.00", "Free Weights", "collars.jpg"));
+        pList.add(createP(id++, "Cast Iron Dumbbell Pair (15kg)", "Solid weight iron dumbbells designed for strength training.", "2799.00", "Free Weights", "collars.jpg"));
+        pList.add(createP(id++, "Olympic Bumper Plates (5kg Pair)", "High density solid rubber bumper plates with steel inserts.", "1499.00", "Free Weights", "collars.jpg"));
+        pList.add(createP(id++, "Olympic Bumper Plates (10kg Pair)", "Standard Olympic size bumper plates built for heavy deadlifts.", "2699.00", "Free Weights", "collars.jpg"));
+        pList.add(createP(id++, "Olympic Bumper Plates (20kg Pair)", "Competition grade heavy rubber plates for squat and bench.", "4999.00", "Free Weights", "collars.jpg"));
+        pList.add(createP(id++, "EZ Curl Barbell (1.2m)", "Ergonomic curved bar to minimize wrist fatigue during curls.", "2499.00", "Free Weights", "collars.jpg"));
+        pList.add(createP(id++, "Hex Trap Barbell", "Specialized shrug and deadlift bar for balanced lifting.", "5999.00", "Free Weights", "collars.jpg"));
+
+        // --- BENCHES (10 items) ---
+        pList.add(createP(id++, "Adjustable Workout Bench (FID)", "Multi-angle flat, incline, and decline workout bench.", "6499.00", "Benches", "bench.jpg"));
+        pList.add(createP(id++, "Heavy-Duty Flat Utility Bench", "Thick high-density padded foam flat bench with sturdy frame.", "3499.00", "Benches", "bench.jpg"));
+        pList.add(createP(id++, "Commercial Olympic Incline Bench", "Heavy gauge steel frame bench equipped with Olympic bar catchers.", "14999.00", "Benches", "bench.jpg"));
+        pList.add(createP(id++, "Commercial Olympic Decline Bench", "Reinforced decline bench targeting lower pectoral muscle development.", "14499.00", "Benches", "bench.jpg"));
+        pList.add(createP(id++, "Seated Preacher Arm Curl Bench", "Ergonomic armrest angle designed for strict isolated bicep curls.", "6999.00", "Benches", "bench.jpg"));
+        pList.add(createP(id++, "Hyperextension Roman Chair Bench", "Reinforced lower back and core developer bench station.", "5999.00", "Benches", "bench.jpg"));
+        pList.add(createP(id++, "Sissy Squat Machine Bench", "Compact deep squat station isolating quad and knee stability.", "5499.00", "Benches", "bench.jpg"));
+        pList.add(createP(id++, "Multi-Angle Foldable Ab Bench", "Space-saving abdominal crunch and sit-up decline bench.", "4299.00", "Benches", "bench.jpg"));
+        pList.add(createP(id++, "Competition Olympic Flat Press Bench", "Wide-stance powerlifting competition flat press bench.", "15999.00", "Benches", "bench.jpg"));
+        pList.add(createP(id++, "Adjustable Preacher & Hyperextension Combo", "Dual function compact bench for biceps and lower lumbar support.", "8499.00", "Benches", "bench.jpg"));
+
+        // --- MACHINES (10 items) ---
+        pList.add(createP(id++, "Heavy-Duty Power Rack Cage", "Solid steel power cage with safety spotters and pull-up bar.", "24999.00", "Machines", "bench.jpg"));
+        pList.add(createP(id++, "Commercial Motorized Treadmill", "3.5 HP AC motor treadmill with auto-incline and shock absorbers.", "54999.00", "Machines", "bench.jpg"));
+        pList.add(createP(id++, "Cable Crossover Functional Trainer", "Dual weight-stack cable pulleys for unlimited exercise freedom.", "64999.00", "Machines", "pullupbar.jpg"));
+        pList.add(createP(id++, "Plate-Loaded Lat Pulldown Station", "High-low dual cable pulley system for back lat workouts.", "28999.00", "Machines", "pullupbar.jpg"));
+        pList.add(createP(id++, "Seated Cable Row Machine", "Heavy-duty commercial row station with anti-slip footplate.", "27499.00", "Machines", "pullupbar.jpg"));
+        pList.add(createP(id++, "45-Degree Leg Press & Hack Squat", "Smooth roller carriage commercial leg press with safety locks.", "58999.00", "Machines", "bench.jpg"));
+        pList.add(createP(id++, "Seated Leg Extension Machine", "Pin-select weight stack machine isolating quadriceps muscles.", "24999.00", "Machines", "bench.jpg"));
+        pList.add(createP(id++, "Prone Leg Curl Machine", "Ergonomic lying hamstring curl machine with contoured pads.", "24999.00", "Machines", "bench.jpg"));
+        pList.add(createP(id++, "Commercial Smith Machine System", "Linear bearing ultra-smooth vertical bar track with safety catches.", "41999.00", "Machines", "bench.jpg"));
+        pList.add(createP(id++, "Air Resistance Assault Bike", "High-intensity interval cardio trainer with heavy-duty fan.", "21999.00", "Machines", "pullupbar.jpg"));
+
+        // --- ACCESSORIES (10 items) ---
+        pList.add(createP(id++, "Resistance Bands Set (5 Levels)", "Premium latex exercise loop bands with handles and door anchor.", "999.00", "Accessories", "rings.jpg"));
+        pList.add(createP(id++, "Olympic Barbell Quick Lock Collars", "High-impact nylon resin collars with quick release clamp.", "499.00", "Accessories", "collars.jpg"));
+        pList.add(createP(id++, "Gymnastic Wooden Rings with Straps", "Solid birch wood rings with 15ft heavy duty numbered straps.", "1699.00", "Accessories", "rings.jpg"));
+        pList.add(createP(id++, "Wall-Mounted Multi-Grip Pull-Up Bar", "Laser-cut heavy steel pull up station with foam grips.", "2299.00", "Accessories", "pullupbar.jpg"));
+        pList.add(createP(id++, "Heavy-Duty Battle Rope (15m)", "Poly-dacron conditioning rope with heat shrink handles.", "3499.00", "Accessories", "collars.jpg"));
+        pList.add(createP(id++, "10mm Leather Weightlifting Belt", "Top-grain genuine leather belt with heavy alloy buckle.", "1999.00", "Accessories", "collars.jpg"));
+        pList.add(createP(id++, "Neoprene Padded Lifting Wrist Straps", "Cotton webbed wrist support straps for heavy deadlifts.", "449.00", "Accessories", "collars.jpg"));
+        pList.add(createP(id++, "High-Density Foam Roller", "Deep tissue muscle recovery roller for mobility workouts.", "799.00", "Accessories", "collars.jpg"));
+        pList.add(createP(id++, "Kettlebell Wrist Guards Pair", "Padded shock-absorbing wrist sleeves for kettlebell cleans.", "599.00", "Accessories", "collars.jpg"));
+        pList.add(createP(id++, "Gym Chalk Ball & Container", "Refillable magnesium carbonate chalk ball for sweat-free grip.", "399.00", "Accessories", "collars.jpg"));
+
+        return pList;
+    }
+
+    private Product createP(long id, String name, String desc, String price, String category, String img) {
+        Product p = new Product();
+        p.setId(id);
+        p.setName(name);
+        p.setDescription(desc);
+        p.setPrice(new BigDecimal(price));
+        p.setCategory(category);
+        p.setImageUrl(img);
+        return p;
     }
 }
