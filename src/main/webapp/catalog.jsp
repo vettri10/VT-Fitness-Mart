@@ -14,52 +14,52 @@
 
     String[][] rawProducts = {
         // Free Weights (10)
-        {"1", "Cast Iron Kettlebell 16kg", "Ergonomic wide grip textured kettlebell for crossfit swings.", "2799.00", "Free Weights", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop"},
-        {"2", "Olympic Barbell 20kg (7ft)", "High-tensile steel barbell with 1500lb capacity and needle bearings.", "7999.00", "Free Weights", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop"},
-        {"3", "Rubber Hex Dumbbell Set (20kg)", "Durable cast iron hex dumbbells with ergonomic chrome handles.", "4499.00", "Free Weights", "https://images.unsplash.com/photo-1638803040283-7a5ffd48dad5?q=80&w=600&auto=format&fit=crop"},
-        {"4", "Cast Iron Dumbbell Pair (10kg)", "Heavy-duty textured grip dumbbells for upper body workout.", "1899.00", "Free Weights", "https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=600&auto=format&fit=crop"},
-        {"5", "Cast Iron Dumbbell Pair (15kg)", "Solid weight iron dumbbells designed for strength training.", "2799.00", "Free Weights", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop"},
-        {"6", "Olympic Bumper Plates (5kg Pair)", "High density solid rubber bumper plates with steel inserts.", "1499.00", "Free Weights", "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600&auto=format&fit=crop"},
-        {"7", "Olympic Bumper Plates (10kg Pair)", "Standard Olympic size bumper plates built for heavy deadlifts.", "2699.00", "Free Weights", "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600&auto=format&fit=crop"},
-        {"8", "Olympic Bumper Plates (20kg Pair)", "Competition grade heavy rubber plates for squat and bench.", "4999.00", "Free Weights", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop"},
-        {"9", "EZ Curl Barbell (1.2m)", "Ergonomic curved bar to minimize wrist fatigue during curls.", "2499.00", "Free Weights", "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop"},
-        {"10", "Hex Trap Barbell", "Specialized shrug and deadlift bar for balanced lifting.", "5999.00", "Free Weights", "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop"},
+        {"1", "Cast Iron Kettlebell 16kg", "Ergonomic wide grip textured kettlebell for crossfit swings.", "2799.00", "Free Weights", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop", "4.8", "124"},
+        {"2", "Olympic Barbell 20kg (7ft)", "High-tensile steel barbell with 1500lb capacity and needle bearings.", "7999.00", "Free Weights", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.9", "210"},
+        {"3", "Rubber Hex Dumbbell Set (20kg)", "Durable cast iron hex dumbbells with ergonomic chrome handles.", "4499.00", "Free Weights", "https://images.unsplash.com/photo-1638803040283-7a5ffd48dad5?q=80&w=600&auto=format&fit=crop", "4.7", "88"},
+        {"4", "Cast Iron Dumbbell Pair (10kg)", "Heavy-duty textured grip dumbbells for upper body workout.", "1899.00", "Free Weights", "https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=600&auto=format&fit=crop", "4.6", "95"},
+        {"5", "Cast Iron Dumbbell Pair (15kg)", "Solid weight iron dumbbells designed for strength training.", "2799.00", "Free Weights", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop", "4.8", "115"},
+        {"6", "Olympic Bumper Plates (5kg Pair)", "High density solid rubber bumper plates with steel inserts.", "1499.00", "Free Weights", "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600&auto=format&fit=crop", "4.7", "62"},
+        {"7", "Olympic Bumper Plates (10kg Pair)", "Standard Olympic size bumper plates built for heavy deadlifts.", "2699.00", "Free Weights", "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600&auto=format&fit=crop", "4.9", "148"},
+        {"8", "Olympic Bumper Plates (20kg Pair)", "Competition grade heavy rubber plates for squat and bench.", "4999.00", "Free Weights", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop", "4.9", "180"},
+        {"9", "EZ Curl Barbell (1.2m)", "Ergonomic curved bar to minimize wrist fatigue during curls.", "2499.00", "Free Weights", "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop", "4.6", "73"},
+        {"10", "Hex Trap Barbell", "Specialized shrug and deadlift bar for balanced lifting.", "5999.00", "Free Weights", "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop", "4.8", "91"},
 
         // Benches (10)
-        {"11", "Adjustable Workout Bench (FID)", "Multi-angle flat, incline, and decline workout bench.", "6499.00", "Benches", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop"},
-        {"12", "Heavy-Duty Flat Utility Bench", "Thick high-density padded foam flat bench with sturdy frame.", "3499.00", "Benches", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop"},
-        {"13", "Commercial Olympic Incline Bench", "Heavy gauge steel frame bench equipped with Olympic bar catchers.", "14999.00", "Benches", "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop"},
-        {"14", "Commercial Olympic Decline Bench", "Reinforced decline bench targeting lower pectoral muscle development.", "14499.00", "Benches", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop"},
-        {"15", "Seated Preacher Arm Curl Bench", "Ergonomic armrest angle designed for strict isolated bicep curls.", "6999.00", "Benches", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop"},
-        {"16", "Hyperextension Roman Chair Bench", "Reinforced lower back and core developer bench station.", "5999.00", "Benches", "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop"},
-        {"17", "Sissy Squat Machine Bench", "Compact deep squat station isolating quad and knee stability.", "5499.00", "Benches", "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600&auto=format&fit=crop"},
-        {"18", "Multi-Angle Foldable Ab Bench", "Space-saving abdominal crunch and sit-up decline bench.", "4299.00", "Benches", "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600&auto=format&fit=crop"},
-        {"19", "Competition Olympic Flat Press Bench", "Wide-stance powerlifting competition flat press bench.", "15999.00", "Benches", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop"},
-        {"20", "Adjustable Preacher & Hyperextension Combo", "Dual function compact bench for biceps and lower lumbar support.", "8499.00", "Benches", "https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=600&auto=format&fit=crop"},
+        {"11", "Adjustable Workout Bench (FID)", "Multi-angle flat, incline, and decline workout bench.", "6499.00", "Benches", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.9", "230"},
+        {"12", "Heavy-Duty Flat Utility Bench", "Thick high-density padded foam flat bench with sturdy frame.", "3499.00", "Benches", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop", "4.7", "142"},
+        {"13", "Commercial Olympic Incline Bench", "Heavy gauge steel frame bench equipped with Olympic bar catchers.", "14999.00", "Benches", "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop", "4.8", "86"},
+        {"14", "Commercial Olympic Decline Bench", "Reinforced decline bench targeting lower pectoral muscle development.", "14499.00", "Benches", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop", "4.6", "54"},
+        {"15", "Seated Preacher Arm Curl Bench", "Ergonomic armrest angle designed for strict isolated bicep curls.", "6999.00", "Benches", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop", "4.8", "99"},
+        {"16", "Hyperextension Roman Chair Bench", "Reinforced lower back and core developer bench station.", "5999.00", "Benches", "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop", "4.7", "68"},
+        {"17", "Sissy Squat Machine Bench", "Compact deep squat station isolating quad and knee stability.", "5499.00", "Benches", "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600&auto=format&fit=crop", "4.5", "41"},
+        {"18", "Multi-Angle Foldable Ab Bench", "Space-saving abdominal crunch and sit-up decline bench.", "4299.00", "Benches", "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600&auto=format&fit=crop", "4.6", "79"},
+        {"19", "Competition Olympic Flat Press Bench", "Wide-stance powerlifting competition flat press bench.", "15999.00", "Benches", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.9", "112"},
+        {"20", "Adjustable Preacher & Hyperextension Combo", "Dual function compact bench for biceps and lower lumbar support.", "8499.00", "Benches", "https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=600&auto=format&fit=crop", "4.7", "59"},
 
         // Machines (10)
-        {"21", "Heavy-Duty Power Rack Cage", "Solid steel power cage with safety spotters and pull-up bar.", "24999.00", "Machines", "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop"},
-        {"22", "Commercial Motorized Treadmill", "3.5 HP AC motor treadmill with auto-incline and shock absorbers.", "54999.00", "Machines", "https://images.unsplash.com/photo-1576678927484-cc907957088c?q=80&w=600&auto=format&fit=crop"},
-        {"23", "Cable Crossover Functional Trainer", "Dual weight-stack cable pulleys for unlimited exercise freedom.", "64999.00", "Machines", "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=600&auto=format&fit=crop"},
-        {"24", "Plate-Loaded Lat Pulldown Station", "High-low dual cable pulley system for back lat workouts.", "28999.00", "Machines", "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop"},
-        {"25", "Seated Cable Row Machine", "Heavy-duty commercial row station with anti-slip footplate.", "27499.00", "Machines", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop"},
-        {"26", "45-Degree Leg Press & Hack Squat", "Smooth roller carriage commercial leg press with safety locks.", "58999.00", "Machines", "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop"},
-        {"27", "Seated Leg Extension Machine", "Pin-select weight stack machine isolating quadriceps muscles.", "24999.00", "Machines", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop"},
-        {"28", "Prone Leg Curl Machine", "Ergonomic lying hamstring curl machine with contoured pads.", "24999.00", "Machines", "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop"},
-        {"29", "Commercial Smith Machine System", "Linear bearing ultra-smooth vertical bar track with safety catches.", "41999.00", "Machines", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop"},
-        {"30", "Air Resistance Assault Bike", "High-intensity interval cardio trainer with heavy-duty fan.", "21999.00", "Machines", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop"},
+        {"21", "Heavy-Duty Power Rack Cage", "Solid steel power cage with safety spotters and pull-up bar.", "24999.00", "Machines", "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop", "4.9", "165"},
+        {"22", "Commercial Motorized Treadmill", "3.5 HP AC motor treadmill with auto-incline and shock absorbers.", "54999.00", "Machines", "https://images.unsplash.com/photo-1576678927484-cc907957088c?q=80&w=600&auto=format&fit=crop", "4.8", "190"},
+        {"23", "Cable Crossover Functional Trainer", "Dual weight-stack cable pulleys for unlimited exercise freedom.", "64999.00", "Machines", "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=600&auto=format&fit=crop", "5.0", "74"},
+        {"24", "Plate-Loaded Lat Pulldown Station", "High-low dual cable pulley system for back lat workouts.", "28999.00", "Machines", "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop", "4.8", "88"},
+        {"25", "Seated Cable Row Machine", "Heavy-duty commercial row station with anti-slip footplate.", "27499.00", "Machines", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop", "4.7", "63"},
+        {"26", "45-Degree Leg Press & Hack Squat", "Smooth roller carriage commercial leg press with safety locks.", "58999.00", "Machines", "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop", "4.9", "127"},
+        {"27", "Seated Leg Extension Machine", "Pin-select weight stack machine isolating quadriceps muscles.", "24999.00", "Machines", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.6", "52"},
+        {"28", "Prone Leg Curl Machine", "Ergonomic lying hamstring curl machine with contoured pads.", "24999.00", "Machines", "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop", "4.7", "49"},
+        {"29", "Commercial Smith Machine System", "Linear bearing ultra-smooth vertical bar track with safety catches.", "41999.00", "Machines", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop", "4.8", "94"},
+        {"30", "Air Resistance Assault Bike", "High-intensity interval cardio trainer with heavy-duty fan.", "21999.00", "Machines", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.8", "138"},
 
         // Accessories (10)
-        {"31", "Resistance Bands Set (5 Levels)", "Premium latex exercise loop bands with handles and door anchor.", "999.00", "Accessories", "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=600&auto=format&fit=crop"},
-        {"32", "Olympic Barbell Quick Lock Collars", "High-impact nylon resin collars with quick release clamp.", "499.00", "Accessories", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop"},
-        {"33", "Gymnastic Wooden Rings with Straps", "Solid birch wood rings with 15ft heavy duty numbered straps.", "1699.00", "Accessories", "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600&auto=format&fit=crop"},
-        {"34", "Wall-Mounted Multi-Grip Pull-Up Bar", "Laser-cut heavy steel pull up station with foam grips.", "2299.00", "Accessories", "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=600&auto=format&fit=crop"},
-        {"35", "Heavy-Duty Battle Rope (15m)", "Poly-dacron conditioning rope with heat shrink handles.", "3499.00", "Accessories", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop"},
-        {"36", "10mm Leather Weightlifting Belt", "Top-grain genuine leather belt with heavy alloy buckle.", "1999.00", "Accessories", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop"},
-        {"37", "Neoprene Padded Lifting Wrist Straps", "Cotton webbed wrist support straps for heavy deadlifts.", "449.00", "Accessories", "https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=600&auto=format&fit=crop"},
-        {"38", "High-Density Foam Roller", "Deep tissue muscle recovery roller for mobility workouts.", "799.00", "Accessories", "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600&auto=format&fit=crop"},
-        {"39", "Kettlebell Wrist Guards Pair", "Padded shock-absorbing wrist sleeves for kettlebell cleans.", "599.00", "Accessories", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop"},
-        {"40", "Gym Chalk Ball & Container", "Refillable magnesium carbonate chalk ball for sweat-free grip.", "399.00", "Accessories", "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600&auto=format&fit=crop"}
+        {"31", "Resistance Bands Set (5 Levels)", "Premium latex exercise loop bands with handles and door anchor.", "999.00", "Accessories", "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=600&auto=format&fit=crop", "4.7", "320"},
+        {"32", "Olympic Barbell Quick Lock Collars", "High-impact nylon resin collars with quick release clamp.", "499.00", "Accessories", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.9", "450"},
+        {"33", "Gymnastic Wooden Rings with Straps", "Solid birch wood rings with 15ft heavy duty numbered straps.", "1699.00", "Accessories", "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600&auto=format&fit=crop", "4.8", "110"},
+        {"34", "Wall-Mounted Multi-Grip Pull-Up Bar", "Laser-cut heavy steel pull up station with foam grips.", "2299.00", "Accessories", "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=600&auto=format&fit=crop", "4.8", "215"},
+        {"35", "Heavy-Duty Battle Rope (15m)", "Poly-dacron conditioning rope with heat shrink handles.", "3499.00", "Accessories", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.7", "95"},
+        {"36", "10mm Leather Weightlifting Belt", "Top-grain genuine leather belt with heavy alloy buckle.", "1999.00", "Accessories", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop", "4.9", "310"},
+        {"37", "Neoprene Padded Lifting Wrist Straps", "Cotton webbed wrist support straps for heavy deadlifts.", "449.00", "Accessories", "https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=600&auto=format&fit=crop", "4.6", "180"},
+        {"38", "High-Density Foam Roller", "Deep tissue muscle recovery roller for mobility workouts.", "799.00", "Accessories", "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600&auto=format&fit=crop", "4.7", "160"},
+        {"39", "Kettlebell Wrist Guards Pair", "Padded shock-absorbing wrist sleeves for kettlebell cleans.", "599.00", "Accessories", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop", "4.5", "75"},
+        {"40", "Gym Chalk Ball & Container", "Refillable magnesium carbonate chalk ball for sweat-free grip.", "399.00", "Accessories", "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600&auto=format&fit=crop", "4.8", "240"}
     };
 
     for (String[] raw : rawProducts) {
@@ -70,6 +70,8 @@
         item.put("price", raw[3]);
         item.put("category", raw[4]);
         item.put("img", raw[5]);
+        item.put("rating", raw[6]);
+        item.put("reviews", raw[7]);
         fullCatalog.add(item);
     }
 
@@ -126,6 +128,9 @@
                 <a href="<%= ctx %>/orders" class="flex items-center gap-1 text-slate-300 hover:text-white transition">
                     <i class="fa-solid fa-box text-red-500"></i> My Orders
                 </a>
+                <a href="<%= ctx %>/dashboard.jsp" class="flex items-center gap-1 text-slate-300 hover:text-white transition bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">
+                    <i class="fa-solid fa-chart-line text-emerald-400"></i> Dashboard
+                </a>
                 <% if (currentUser != null) { %>
                     <span class="text-slate-400 hidden md:inline">Account Active</span>
                     <a href="<%= ctx %>/auth/logout" class="text-red-400 hover:text-red-300 transition">Logout</a>
@@ -179,6 +184,18 @@
                             <span class="text-[10px] font-bold tracking-wider uppercase text-red-500 font-mono"><%= p.get("category") %></span>
                             <h3 class="text-base font-bold text-white mt-1 group-hover:text-red-400 transition line-clamp-1"><%= p.get("name") %></h3>
                             <p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed"><%= p.get("desc") %></p>
+                            
+                            <!-- Star Rating & Review Count -->
+                            <div class="flex items-center gap-1.5 mt-2">
+                                <div class="flex text-amber-400 text-xs">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star-half-stroke"></i>
+                                </div>
+                                <span class="text-[11px] font-semibold text-slate-400"><%= p.get("rating") %> (<%= p.get("reviews") %> reviews)</span>
+                            </div>
                         </div>
                         <div class="pt-5 mt-4 border-t border-slate-800/80 flex items-center justify-between gap-2">
                             <div>
