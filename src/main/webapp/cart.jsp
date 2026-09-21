@@ -101,7 +101,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Customer Name</label>
-                            <input type="text" name="customerName" required value="Shesuma" 
+                            <input type="text" name="customerName" required value="Vettri" 
                                    class="w-full mt-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-red-500">
                         </div>
                         <div>
