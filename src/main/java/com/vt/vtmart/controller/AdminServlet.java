@@ -37,7 +37,7 @@ public class AdminServlet extends HttpServlet {
             out.println("    <div class='max-w-7xl mx-auto px-6 h-16 flex items-center justify-between'>");
             out.println("      <a href='" + ctx + "/products' class='flex items-center gap-2'>");
             out.println("        <span class='bg-red-600 text-white font-bold text-lg px-2.5 py-0.5 rounded'>VT</span>");
-            out.println("        <span class='font-bold text-lg tracking-tight text-white'>VT Mart Operations & Analytics</span>");
+            out.println("        <span class='font-bold text-lg tracking-tight text-white'>VT Fitness Mart Analytics</span>");
             out.println("      </a>");
             out.println("      <a href='" + ctx + "/products' class='text-xs font-semibold text-slate-300 hover:text-white flex items-center gap-1.5 transition'>");
             out.println("        <i class='fa-solid fa-arrow-left text-red-500'></i> Back to Store");
