@@ -1,5 +1,5 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.List, java.util.ArrayList, java.util.Map, java.util.HashMap" %>
+<%@ page import="java.util.List, java.util.ArrayList, java.util.Map, java.util.HashMap, java.net.URLEncoder" %>
 <%
     String ctx = request.getContextPath();
     Object currentUser = session.getAttribute("user");
@@ -103,12 +103,12 @@
 
     <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
-            <a href="<%= ctx %>/products" class="flex items-center gap-2">
+            <a href="<%= ctx %>/catalog.jsp" class="flex items-center gap-2">
                 <span class="bg-red-600 text-white font-black text-xl px-2.5 py-0.5 rounded">VT</span>
                 <span class="font-bold text-lg tracking-tight text-white hidden sm:inline">VT Fitness Mart</span>
             </a>
 
-            <form action="<%= ctx %>/products" method="GET" class="flex-1 max-w-md mx-4">
+            <form action="<%= ctx %>/catalog.jsp" method="GET" class="flex-1 max-w-md mx-4">
                 <div class="relative flex items-center">
                     <input type="text" name="keyword" value="<%= selectedKeyword != null ? selectedKeyword : "" %>"
                            placeholder="Search products..." 
@@ -139,23 +139,23 @@
     <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
 
         <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 text-xs font-semibold scrollbar-none">
-            <a href="<%= ctx %>/products" 
+            <a href="<%= ctx %>/catalog.jsp" 
                class="px-4 py-2 rounded-lg transition <%= (selectedCategory == null || "All".equalsIgnoreCase(selectedCategory)) ? "bg-red-600 text-white" : "bg-slate-900 text-slate-400 hover:bg-slate-800" %>">
                All Equipment (<%= fullCatalog.size() %>)
             </a>
-            <a href="<%= ctx %>/products?category=Machines" 
+            <a href="<%= ctx %>/catalog.jsp?category=Machines" 
                class="px-4 py-2 rounded-lg transition <%= "Machines".equalsIgnoreCase(selectedCategory) ? "bg-red-600 text-white" : "bg-slate-900 text-slate-400 hover:bg-slate-800" %>">
                Machines
             </a>
-            <a href="<%= ctx %>/products?category=Free+Weights" 
+            <a href="<%= ctx %>/catalog.jsp?category=Free+Weights" 
                class="px-4 py-2 rounded-lg transition <%= "Free Weights".equalsIgnoreCase(selectedCategory) ? "bg-red-600 text-white" : "bg-slate-900 text-slate-400 hover:bg-slate-800" %>">
                Free Weights
             </a>
-            <a href="<%= ctx %>/products?category=Benches" 
+            <a href="<%= ctx %>/catalog.jsp?category=Benches" 
                class="px-4 py-2 rounded-lg transition <%= "Benches".equalsIgnoreCase(selectedCategory) ? "bg-red-600 text-white" : "bg-slate-900 text-slate-400 hover:bg-slate-800" %>">
                Benches
             </a>
-            <a href="<%= ctx %>/products?category=Accessories" 
+            <a href="<%= ctx %>/catalog.jsp?category=Accessories" 
                class="px-4 py-2 rounded-lg transition <%= "Accessories".equalsIgnoreCase(selectedCategory) ? "bg-red-600 text-white" : "bg-slate-900 text-slate-400 hover:bg-slate-800" %>">
                Accessories
             </a>
@@ -164,6 +164,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <% for (Map<String, String> p : displayList) { 
                 String imgName = p.get("img");
+                String encName = URLEncoder.encode(p.get("name"), "UTF-8");
             %>
                 <div class="bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition flex flex-col group">
                     <div class="h-52 bg-slate-950 relative overflow-hidden flex items-center justify-center p-2">
@@ -178,18 +179,20 @@
                             <h3 class="text-base font-bold text-white mt-1 group-hover:text-red-400 transition line-clamp-1"><%= p.get("name") %></h3>
                             <p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed"><%= p.get("desc") %></p>
                         </div>
-                        <div class="pt-5 mt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <div class="pt-5 mt-4 border-t border-slate-800/80 flex items-center justify-between gap-2">
                             <div>
-                                <span class="text-lg font-bold text-white">&#8377; <%= p.get("price") %></span>
+                                <span class="text-base font-bold text-white">&#8377; <%= p.get("price") %></span>
                             </div>
-                            <button type="button"
-                                    class="add-btn px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold rounded-lg text-xs transition flex items-center gap-1.5 shadow-lg shadow-red-600/20"
-                                    data-id="<%= p.get("id") %>"
-                                    data-name="<%= p.get("name") %>"
-                                    data-price="<%= p.get("price") %>"
-                                    data-img="<%= imgName %>">
-                                <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                            </button>
+                            <div class="flex items-center gap-1.5">
+                                <a href="<%= ctx %>/cart.jsp?pId=<%= p.get("id") %>&pName=<%= encName %>&pPrice=<%= p.get("price") %>&pImg=<%= imgName %>" 
+                                   class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 font-semibold rounded-lg text-[11px] transition flex items-center gap-1 border border-slate-700">
+                                    <i class="fa-solid fa-cart-plus text-slate-400"></i> Add
+                                </a>
+                                <a href="<%= ctx %>/checkout.jsp?pId=<%= p.get("id") %>&pName=<%= encName %>&pPrice=<%= p.get("price") %>&pImg=<%= imgName %>" 
+                                   class="px-3 py-1.5 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold rounded-lg text-[11px] transition flex items-center gap-1 shadow-lg shadow-red-600/25">
+                                    <i class="fa-solid fa-bolt"></i> Buy Now
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -202,25 +205,5 @@
         &copy; 2026 VT Fitness Mart - Anna University Capstone Project
     </footer>
 
-    <script>
-        document.querySelectorAll('.add-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const name = this.getAttribute('data-name');
-                const price = this.getAttribute('data-price');
-                const img = this.getAttribute('data-img');
-
-                let cart = JSON.parse(localStorage.getItem('vt_cart_items') || '[]');
-                let found = cart.find(item => item.id === id);
-                if (found) {
-                    found.qty = (parseInt(found.qty) || 1) + 1;
-                } else {
-                    cart.push({ id: id, name: name, price: parseFloat(price) || 0, img: img, qty: 1 });
-                }
-                localStorage.setItem('vt_cart_items', JSON.stringify(cart));
-                window.location.href = '<%= ctx %>/cart.jsp';
-            });
-        });
-    </script>
 </body>
 </html>
