@@ -128,7 +128,7 @@
                 <a href="<%= ctx %>/orders" class="flex items-center gap-1 text-slate-300 hover:text-white transition">
                     <i class="fa-solid fa-box text-red-500"></i> My Orders
                 </a>
-                <a href="<%= ctx %>/dashboard.jsp" class="flex items-center gap-1 text-slate-300 hover:text-white transition bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">
+                <a href="<%= ctx %>/cart.jsp?view=admin" class="flex items-center gap-1 text-slate-300 hover:text-white transition bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">
                     <i class="fa-solid fa-chart-line text-emerald-400"></i> Dashboard
                 </a>
                 <% if (currentUser != null) { %>
