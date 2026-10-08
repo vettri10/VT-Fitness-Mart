@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in — VT Mart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="httpss2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:        #EDF3E7;
+  --card:         #FBF8EF;
+  --ink:          #20261D;
+  --forest:       #1F3D2B;
+  --forest-dark:  #16291D;
+  --marigold:     #F2A93B;
+  --tomato:       #C1432D;
+  --line:         #C9D3C0;
+
+  --font-display: "Fraunces", serif;
+  --font-body:    "Work Sans", sans-serif;
+  --font-mono:    "Space Mono", monospace;
+
+  --radius: 14px;
+  --shadow: 0 6px 18px rgba(32, 38, 29, 0.10);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+}
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--tomato);
+  outline-offset: 3px;
+}
+
+.login-wrap {
+  width: 100%;
+  max-width: 400px;
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+.logo-mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  background: var(--forest);
+  color: var(--paper);
+  padding: 2px 9px;
+  border-radius: 6px;
+  transform: rotate(-3deg);
+  display: inline-block;
+}
+
+.logo-word {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
+  font-size: 1.4rem;
+}
+
+.login-card {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px 30px 28px;
+  position: relative;
+}
+
+/* corner stamp, echoes the homepage hero badge */
+.login-card::after {
+  content: "MEMBER";
+  position: absolute;
+  top: -14px;
+  right: 22px;
+  background: var(--marigold);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  padding: 5px 10px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  transform: rotate(4deg);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: var(--tomato);
+  margin: 0 0 8px;
+}
+
+.login-card h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.9rem;
+  margin: 0 0 6px;
+}
+
+.login-sub {
+  margin: 0 0 26px;
+  color: #4a5240;
+  font-size: 0.92rem;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 7px;
+}
+
+.field input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.field input::placeholder { color: #7a8370; }
+
+.password-row {
+  position: relative;
+}
+
+.toggle-pw {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--forest);
+  cursor: pointer;
+  padding: 4px;
+}
+.toggle-pw:hover { text-decoration: underline; }
+
+.form-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: -4px 0 22px;
+  font-size: 0.85rem;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.remember input { accent-color: var(--forest); }
+
+.forgot-link {
+  font-size: 0.85rem;
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink);
+}
+.forgot-link:hover { color: var(--tomato); border-color: var(--tomato); }
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  text-align: center;
+  padding: 14px 24px;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--forest);
+  color: var(--paper);
+  border-color: var(--forest);
+}
+.btn-primary:hover {
+  background: var(--forest-dark);
+  transform: translateY(-2px);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  color: #7a8370;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.signup-note {
+  text-align: center;
+  font-size: 0.9rem;
+  margin: 0;
+}
+.signup-note a {
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink);
+}
+.signup-note a:hover { color: var(--tomato); border-color: var(--tomato); }
+
+.error-msg {
+  display: none;
+  background: #fbe4dd;
+  border: 2px solid var(--tomato);
+  color: var(--tomato);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 18px;
+}
+.error-msg.is-visible { display: block; }
+
+@media (max-width: 420px) {
+  .login-card { padding: 26px 20px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="login-wrap">
+  <a href="index.html" class="logo">
+    <span class="logo-mark">VT</span>
+    <span class="logo-word">Mart</span>
+  </a>
+
+  <div class="login-card">
+    <p class="eyebrow">Welcome back</p>
+    <h1>Sign in</h1>
+    <p class="login-sub">Check today's tags, track orders and keep your usual list handy.</p>
+
+    <p class="error-msg" id="errorMsg" role="alert">Enter a valid email and password to continue.</p>
+
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="password-row">
+          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
+          <button type="button" class="toggle-pw" id="togglePw" aria-controls="password">Show</button>
+        </div>
+      </div>
+
+      <div class="form-meta">
+        <label class="remember">
+          <input type="checkbox" name="remember">
+          Keep me signed in
+        </label>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </form>
+
+    <div class="divider">or</div>
+
+    <p class="signup-note">New to VT Mart? <a href="#">Create an account</a></p>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('loginForm');
+  const errorMsg = document.getElementById('errorMsg');
+  const togglePw = document.getElementById('togglePw');
+  const password = document.getElementById('password');
+
+  togglePw.addEventListener('click', () => {
+    const isPw = password.type === 'password';
+    password.type = isPw ? 'text' : 'password';
+    togglePw.textContent = isPw ? 'Hide' : 'Show';
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      errorMsg.classList.add('is-visible');
+      return;
+    }
+    errorMsg.classList.remove('is-visible');
+    // Hook up real authentication here.
+    alert('Signed in! (connect this form to your backend)');
+  });
+</script>
+
+</body>
+</html>ss

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In — VT Mart</title>
+<link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+<link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap)" rel="stylesheet">
+<style>
+:root {
+  --paper:        #EDF3E7;
+  --card:         #FBF8EF;
+  --ink:          #20261D;
+  --forest:       #1F3D2B;
+  --forest-dark:  #16291D;
+  --marigold:     #F2A93B;
+  --tomato:       #C1432D;
+  --line:         #C9D3C0;
+
+  --font-display: "Fraunces", serif;
+  --font-body:    "Work Sans", sans-serif;
+  --font-mono:    "Space Mono", monospace;
+
+  --radius: 14px;
+  --shadow: 0 6px 18px rgba(32, 38, 29, 0.10);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+}
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--tomato);
+  outline-offset: 3px;
+}
+
+/* Header (matches site) */
+.site-header {
+  background: var(--paper);
+  border-bottom: 2px solid var(--ink);
+}
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.logo-mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  background: var(--forest);
+  color: var(--paper);
+  padding: 2px 9px;
+  border-radius: 6px;
+  transform: rotate(-3deg);
+  display: inline-block;
+}
+.logo-word {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
+  font-size: 1.4rem;
+}
+.main-nav {
+  display: flex;
+  gap: 28px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.main-nav a {
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+}
+.main-nav a:hover { border-color: var(--tomato); }
+
+/* Auth layout */
+main.auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+}
+
+.auth-card {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 40px;
+  max-width: 420px;
+  width: 100%;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  color: var(--tomato);
+  margin: 0 0 10px;
+}
+
+.auth-card h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.9rem;
+  margin: 0 0 8px;
+}
+
+.auth-sub {
+  color: #4a5240;
+  margin: 0 0 28px;
+  font-size: 0.95rem;
+}
+
+.form-group { margin-bottom: 18px; }
+
+.form-group label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  background: var(--paper);
+  color: var(--ink);
+}
+.form-group input::placeholder { color: #7a8370; }
+.form-group input:focus { outline: 3px solid var(--tomato); outline-offset: 2px; }
+
+.auth-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: -4px 0 20px;
+  font-size: 0.85rem;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.remember input { accent-color: var(--forest); }
+
+.forgot-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-decoration: none;
+  color: var(--tomato);
+}
+.forgot-link:hover { text-decoration: underline; }
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  padding: 14px 24px;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--forest);
+  color: var(--paper);
+  border-color: var(--forest);
+}
+.btn-primary:hover {
+  background: var(--forest-dark);
+  transform: translateY(-2px);
+}
+
+.auth-switch {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #4a5240;
+}
+.auth-switch a {
+  color: var(--tomato);
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-switch a:hover { text-decoration: underline; }
+
+.error-msg {
+  display: none;
+  background: #fbe4de;
+  border: 2px solid var(--tomato);
+  color: var(--tomato);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 18px;
+}
+.error-msg.is-visible { display: block; }
+
+/* Footer */
+.site-footer {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 24px 0;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 480px) {
+  .auth-card { padding: 28px 22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">VT</span>
+      <span class="logo-word">Mart</span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html#shop">Shop</a>
+      <a href="index.html#deals">Deals</a>
+      <a href="index.html#hours">Hours &amp; Location</a>
+      <a href="index.html#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="auth-main">
+  <div class="auth-card">
+    <p class="eyebrow">Welcome back</p>
+    <h1>Log in to VT Mart</h1>
+    <p class="auth-sub">Check your saved lists, past orders and weekly deals.</p>
+
+    <div class="error-msg" id="errorMsg" role="alert">Please enter a valid email and password.</div>
+
+    <form id="loginForm" novalidate>
+      <div class="form-group">
+        <label for="loginEmail">Email address</label>
+        <input type="email" id="loginEmail" name="email" placeholder="you@example.com" required autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" name="password" placeholder="••••••••" required autocomplete="current-password" minlength="6">
+      </div>
+
+      <div class="auth-options">
+        <label class="remember">
+          <input type="checkbox" name="remember">
+          Remember me
+        </label>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Log in</button>
+    </form>
+
+    <p class="auth-switch">New to VT Mart? <a href="register.html">Create an account</a></p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">&copy; 2026 VT Mart. Church Street, Bengaluru.</div>
+</footer>
+
+<script>
+  const form = document.getElementById('loginForm');
+  const errorMsg = document.getElementById('errorMsg');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password || password.length < 6) {
+      errorMsg.classList.add('is-visible');
+      return;
+    }
+
+    errorMsg.classList.remove('is-visible');
+    // Hook this up to your real auth endpoint.
+    alert('Login submitted for: ' + email);
+  });
+</script>
+
+</body>
+</html>
