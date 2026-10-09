@@ -1,207 +1,227 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.List, java.util.Map, java.util.ArrayList" %>
+<%@ page import="java.util.List, java.util.ArrayList, java.util.Map, java.util.HashMap, java.net.URLEncoder" %>
 <%
     String ctx = request.getContextPath();
+    Object currentUser = session.getAttribute("user");
+    if (currentUser == null) {
+        currentUser = session.getAttribute("currentUser");
+    }
 
-    List<Map<String, String>> products = new ArrayList<>();
-    
-    // 1
-    Map<String, String> p1 = new java.util.HashMap<>();
-    p1.put("id", "1");
-    p1.put("name", "Olympic Barbell 20kg (7ft)");
-    p1.put("category", "Free Weights");
-    p1.put("price", "7999.00");
-    p1.put("rating", "4.9");
-    p1.put("reviews", "48");
-    p1.put("image", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop");
-    products.add(p1);
+    String selectedCategory = request.getParameter("category");
+    String selectedKeyword = request.getParameter("keyword");
 
-    // 2
-    Map<String, String> p2 = new java.util.HashMap<>();
-    p2.put("id", "2");
-    p2.put("name", "Rubber Hex Dumbbell Set 20kg (Pair)");
-    p2.put("category", "Free Weights");
-    p2.put("price", "4499.00");
-    p2.put("rating", "4.8");
-    p2.put("reviews", "36");
-    p2.put("image", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop");
-    products.add(p2);
+    List<Map<String, String>> fullCatalog = new ArrayList<>();
 
-    // 3
-    Map<String, String> p3 = new java.util.HashMap<>();
-    p3.put("id", "3");
-    p3.put("name", "Cast Iron Competition Kettlebell 16kg");
-    p3.put("category", "Conditioning");
-    p3.put("price", "2799.00");
-    p3.put("rating", "4.9");
-    p3.put("reviews", "52");
-    p3.put("image", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop");
-    products.add(p3);
+    String[][] rawProducts = {
+        // Free Weights (10)
+        {"1", "Cast Iron Kettlebell 16kg", "Ergonomic wide grip textured kettlebell for crossfit swings.", "2799.00", "Free Weights", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop", "4.8", "124"},
+        {"2", "Olympic Barbell 20kg (7ft)", "High-tensile steel barbell with 1500lb capacity and needle bearings.", "7999.00", "Free Weights", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.9", "210"},
+        {"3", "Rubber Hex Dumbbell Set (20kg)", "Durable cast iron hex dumbbells with ergonomic chrome handles.", "4499.00", "Free Weights", "https://images.unsplash.com/photo-1638803040283-7a5ffd48dad5?q=80&w=600&auto=format&fit=crop", "4.7", "88"},
+        {"4", "Cast Iron Dumbbell Pair (10kg)", "Heavy-duty textured grip dumbbells for upper body workout.", "1899.00", "Free Weights", "https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=600&auto=format&fit=crop", "4.6", "95"},
+        {"5", "Cast Iron Dumbbell Pair (15kg)", "Solid weight iron dumbbells designed for strength training.", "2799.00", "Free Weights", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop", "4.8", "115"},
+        {"6", "Olympic Bumper Plates (5kg Pair)", "High density solid rubber bumper plates with steel inserts.", "1499.00", "Free Weights", "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600&auto=format&fit=crop", "4.7", "62"},
+        {"7", "Olympic Bumper Plates (10kg Pair)", "Standard Olympic size bumper plates built for heavy deadlifts.", "2699.00", "Free Weights", "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600&auto=format&fit=crop", "4.9", "148"},
+        {"8", "Olympic Bumper Plates (20kg Pair)", "Competition grade heavy rubber plates for squat and bench.", "4999.00", "Free Weights", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop", "4.9", "180"},
+        {"9", "EZ Curl Barbell (1.2m)", "Ergonomic curved bar to minimize wrist fatigue during curls.", "2499.00", "Free Weights", "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop", "4.6", "73"},
+        {"10", "Hex Trap Barbell", "Specialized shrug and deadlift bar for balanced lifting.", "5999.00", "Free Weights", "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop", "4.8", "91"},
 
-    // 4
-    Map<String, String> p4 = new java.util.HashMap<>();
-    p4.put("id", "4");
-    p4.put("name", "Adjustable Commercial Workout Bench (FID)");
-    p4.put("category", "Benches & Racks");
-    p4.put("price", "6499.00");
-    p4.put("rating", "4.7");
-    p4.put("reviews", "29");
-    p4.put("image", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop");
-    products.add(p4);
+        // Benches (10)
+        {"11", "Adjustable Workout Bench (FID)", "Multi-angle flat, incline, and decline workout bench.", "6499.00", "Benches", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.9", "230"},
+        {"12", "Heavy-Duty Flat Utility Bench", "Thick high-density padded foam flat bench with sturdy frame.", "3499.00", "Benches", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop", "4.7", "142"},
+        {"13", "Commercial Olympic Incline Bench", "Heavy gauge steel frame bench equipped with Olympic bar catchers.", "14999.00", "Benches", "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop", "4.8", "86"},
+        {"14", "Commercial Olympic Decline Bench", "Reinforced decline bench targeting lower pectoral muscle development.", "14499.00", "Benches", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop", "4.6", "54"},
+        {"15", "Seated Preacher Arm Curl Bench", "Ergonomic armrest angle designed for strict isolated bicep curls.", "6999.00", "Benches", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop", "4.8", "99"},
+        {"16", "Hyperextension Roman Chair Bench", "Reinforced lower back and core developer bench station.", "5999.00", "Benches", "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop", "4.7", "68"},
+        {"17", "Sissy Squat Machine Bench", "Compact deep squat station isolating quad and knee stability.", "5499.00", "Benches", "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600&auto=format&fit=crop", "4.5", "41"},
+        {"18", "Multi-Angle Foldable Ab Bench", "Space-saving abdominal crunch and sit-up decline bench.", "4299.00", "Benches", "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600&auto=format&fit=crop", "4.6", "79"},
+        {"19", "Competition Olympic Flat Press Bench", "Wide-stance powerlifting competition flat press bench.", "15999.00", "Benches", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.9", "112"},
+        {"20", "Adjustable Preacher & Hyperextension Combo", "Dual function compact bench for biceps and lower lumbar support.", "8499.00", "Benches", "https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=600&auto=format&fit=crop", "4.7", "59"},
 
-    // 5
-    Map<String, String> p5 = new java.util.HashMap<>();
-    p5.put("id", "5");
-    p5.put("name", "Heavy Duty Power Rack (11 Gauge Steel)");
-    p5.put("category", "Benches & Racks");
-    p5.put("price", "18999.00");
-    p5.put("rating", "5.0");
-    p5.put("reviews", "19");
-    p5.put("image", "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop");
-    products.add(p5);
+        // Machines (10)
+        {"21", "Heavy-Duty Power Rack Cage", "Solid steel power cage with safety spotters and pull-up bar.", "24999.00", "Machines", "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop", "4.9", "165"},
+        {"22", "Commercial Motorized Treadmill", "3.5 HP AC motor treadmill with auto-incline and shock absorbers.", "54999.00", "Machines", "https://images.unsplash.com/photo-1576678927484-cc907957088c?q=80&w=600&auto=format&fit=crop", "4.8", "190"},
+        {"23", "Cable Crossover Functional Trainer", "Dual weight-stack cable pulleys for unlimited exercise freedom.", "64999.00", "Machines", "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=600&auto=format&fit=crop", "5.0", "74"},
+        {"24", "Plate-Loaded Lat Pulldown Station", "High-low dual cable pulley system for back lat workouts.", "28999.00", "Machines", "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop", "4.8", "88"},
+        {"25", "Seated Cable Row Machine", "Heavy-duty commercial row station with anti-slip footplate.", "27499.00", "Machines", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop", "4.7", "63"},
+        {"26", "45-Degree Leg Press & Hack Squat", "Smooth roller carriage commercial leg press with safety locks.", "58999.00", "Machines", "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop", "4.9", "127"},
+        {"27", "Seated Leg Extension Machine", "Pin-select weight stack machine isolating quadriceps muscles.", "24999.00", "Machines", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.6", "52"},
+        {"28", "Prone Leg Curl Machine", "Ergonomic lying hamstring curl machine with contoured pads.", "24999.00", "Machines", "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop", "4.7", "49"},
+        {"29", "Commercial Smith Machine System", "Linear bearing ultra-smooth vertical bar track with safety catches.", "41999.00", "Machines", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop", "4.8", "94"},
+        {"30", "Air Resistance Assault Bike", "High-intensity interval cardio trainer with heavy-duty fan.", "21999.00", "Machines", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.8", "138"},
 
-    // 6
-    Map<String, String> p6 = new java.util.HashMap<>();
-    p6.put("id", "6");
-    p6.put("name", "Olympic Barbell Quick Lock Collars (Pair)");
-    p6.put("category", "Accessories");
-    p6.put("price", "799.00");
-    p6.put("rating", "4.8");
-    p6.put("reviews", "64");
-    p6.put("image", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop");
-    products.add(p6);
+        // Accessories (10)
+        {"31", "Resistance Bands Set (5 Levels)", "Premium latex exercise loop bands with handles and door anchor.", "999.00", "Accessories", "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=600&auto=format&fit=crop", "4.7", "320"},
+        {"32", "Olympic Barbell Quick Lock Collars", "High-impact nylon resin collars with quick release clamp.", "499.00", "Accessories", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.9", "450"},
+        {"33", "Gymnastic Wooden Rings with Straps", "Solid birch wood rings with 15ft heavy duty numbered straps.", "1699.00", "Accessories", "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600&auto=format&fit=crop", "4.8", "110"},
+        {"34", "Wall-Mounted Multi-Grip Pull-Up Bar", "Laser-cut heavy steel pull up station with foam grips.", "2299.00", "Accessories", "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=600&auto=format&fit=crop", "4.8", "215"},
+        {"35", "Heavy-Duty Battle Rope (15m)", "Poly-dacron conditioning rope with heat shrink handles.", "3499.00", "Accessories", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop", "4.7", "95"},
+        {"36", "10mm Leather Weightlifting Belt", "Top-grain genuine leather belt with heavy alloy buckle.", "1999.00", "Accessories", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop", "4.9", "310"},
+        {"37", "Neoprene Padded Lifting Wrist Straps", "Cotton webbed wrist support straps for heavy deadlifts.", "449.00", "Accessories", "https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=600&auto=format&fit=crop", "4.6", "180"},
+        {"38", "High-Density Foam Roller", "Deep tissue muscle recovery roller for mobility workouts.", "799.00", "Accessories", "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600&auto=format&fit=crop", "4.7", "160"},
+        {"39", "Kettlebell Wrist Guards Pair", "Padded shock-absorbing wrist sleeves for kettlebell cleans.", "599.00", "Accessories", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop", "4.5", "75"},
+        {"40", "Gym Chalk Ball & Container", "Refillable magnesium carbonate chalk ball for sweat-free grip.", "399.00", "Accessories", "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600&auto=format&fit=crop", "4.8", "240"}
+    };
 
-    // 7
-    Map<String, String> p7 = new java.util.HashMap<>();
-    p7.put("id", "7");
-    p7.put("name", "Olympic Bumper Weight Plates 20kg (Pair)");
-    p7.put("category", "Free Weights");
-    p7.put("price", "5999.00");
-    p7.put("rating", "4.9");
-    p7.put("reviews", "41");
-    p7.put("image", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop");
-    products.add(p7);
+    for (String[] raw : rawProducts) {
+        Map<String, String> item = new HashMap<>();
+        item.put("id", raw[0]);
+        item.put("name", raw[1]);
+        item.put("desc", raw[2]);
+        item.put("price", raw[3]);
+        item.put("category", raw[4]);
+        item.put("img", raw[5]);
+        item.put("rating", raw[6]);
+        item.put("reviews", raw[7]);
+        fullCatalog.add(item);
+    }
 
-    // 8
-    Map<String, String> p8 = new java.util.HashMap<>();
-    p8.put("id", "8");
-    p8.put("name", "EZ Curl Barbell 4ft Chrome Finish");
-    p8.put("category", "Free Weights");
-    p8.put("price", "2499.00");
-    p8.put("rating", "4.8");
-    p8.put("reviews", "33");
-    p8.put("image", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop");
-    products.add(p8);
+    List<Map<String, String>> displayList = new ArrayList<>();
+    boolean hasCategory = selectedCategory != null && !selectedCategory.trim().isEmpty() && !"All".equalsIgnoreCase(selectedCategory.trim());
+    boolean hasKeyword = selectedKeyword != null && !selectedKeyword.trim().isEmpty();
 
-    // 9
-    Map<String, String> p9 = new java.util.HashMap<>();
-    p9.put("id", "9");
-    p9.put("name", "Heavy Duty Battle Rope 15m (38mm Thick)");
-    p9.put("category", "Conditioning");
-    p9.put("price", "3299.00");
-    p9.put("rating", "4.9");
-    p9.put("reviews", "27");
-    p9.put("image", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop");
-    products.add(p9);
+    String kw = hasKeyword ? selectedKeyword.trim().toLowerCase() : "";
+    String cat = hasCategory ? selectedCategory.trim().toLowerCase() : "";
 
-    // 10
-    Map<String, String> p10 = new java.util.HashMap<>();
-    p10.put("id", "10");
-    p10.put("name", "Commercial Squat Stand & Pull-up Station");
-    p10.put("category", "Benches & Racks");
-    p10.put("price", "12499.00");
-    p10.put("rating", "4.8");
-    p10.put("reviews", "15");
-    p10.put("image", "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop");
-    products.add(p10);
-
-    // 11
-    Map<String, String> p11 = new java.util.HashMap<>();
-    p11.put("id", "11");
-    p11.put("name", "Cast Iron Kettlebell 24kg (Heavy)");
-    p11.put("category", "Conditioning");
-    p11.put("price", "3999.00");
-    p11.put("rating", "5.0");
-    p11.put("reviews", "22");
-    p11.put("image", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop");
-    products.add(p11);
-
-    // 12
-    Map<String, String> p12 = new java.util.HashMap<>();
-    p12.put("id", "12");
-    p12.put("name", "Leather Weightlifting Belt & Wrist Wraps");
-    p12.put("category", "Accessories");
-    p12.put("price", "1499.00");
-    p12.put("rating", "4.9");
-    p12.put("reviews", "58");
-    p12.put("image", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop");
-    products.add(p12);
+    for (Map<String, String> p : fullCatalog) {
+        boolean matchCat = !hasCategory || p.get("category").toLowerCase().equals(cat);
+        boolean matchKw = !hasKeyword || (p.get("name").toLowerCase().contains(kw) || p.get("desc").toLowerCase().contains(kw));
+        if (matchCat && matchKw) {
+            displayList.add(p);
+        }
+    }
 %>
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-slate-950 text-slate-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store Catalog | VT Fitness Mart</title>
+    <title>VT Fitness Mart | Premium Gym Equipment</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
-<body class="flex flex-col min-h-full relative">
+<body class="flex flex-col min-h-full">
 
-    <!-- Toast Notification -->
-    <div id="cartToast" class="fixed top-20 right-6 z-50 transform translate-y-[-100px] opacity-0 transition duration-300 pointer-events-none bg-slate-900 border border-emerald-500/40 text-emerald-400 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-xs">
-        <i class="fa-solid fa-circle-check text-base"></i>
-        <span id="toastMsg" class="font-semibold text-slate-200">Equipment added to cart!</span>
-    </div>
-
-    <!-- Header Navigation -->
-    <header class="sticky top-0 z-40 backdrop-blur-md bg-slate-950/80 border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="<%= ctx %>/products" class="flex items-center gap-2">
-                <span class="bg-red-600 text-white font-bold text-lg px-2.5 py-0.5 rounded">VT</span>
-                <span class="font-bold text-lg tracking-tight text-white">VT Fitness Mart</span>
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
+            <a href="<%= ctx %>/catalog.jsp" class="flex items-center gap-2">
+                <span class="bg-red-600 text-white font-black text-xl px-2.5 py-0.5 rounded">VT</span>
+                <span class="font-bold text-lg tracking-tight text-white hidden sm:inline">VT Fitness Mart</span>
             </a>
-            
-            <div class="flex items-center gap-3 text-xs font-semibold">
-                <a href="<%= ctx %>/products" class="px-3 py-1.5 rounded-lg bg-red-600 text-white font-bold transition">
-                    <i class="fa-solid fa-store"></i> Catalog
-                </a>
-                <a href="<%= ctx %>/cart.jsp" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition flex items-center gap-2">
+
+            <form action="<%= ctx %>/catalog.jsp" method="GET" class="flex-1 max-w-md mx-4">
+                <div class="relative flex items-center">
+                    <input type="text" name="keyword" value="<%= selectedKeyword != null ? selectedKeyword : "" %>"
+                           placeholder="Search products..." 
+                           class="w-full bg-slate-900 border border-slate-800 rounded-lg pl-4 pr-20 py-2 text-xs text-slate-200 focus:outline-none focus:border-red-500">
+                    <button type="submit" class="absolute right-1 px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-md transition">
+                        Search
+                    </button>
+                </div>
+            </form>
+
+            <div class="flex items-center gap-4 text-xs font-semibold">
+                <a href="<%= ctx %>/cart.jsp" class="flex items-center gap-1 text-slate-300 hover:text-white transition">
                     <i class="fa-solid fa-cart-shopping text-red-500"></i> Cart
-                    <span id="cartCountBadge" class="bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full">0</span>
                 </a>
-                <a href="<%= ctx %>/cart.jsp?view=admin" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition flex items-center gap-1.5">
+                <a href="<%= ctx %>/orders" class="flex items-center gap-1 text-slate-300 hover:text-white transition">
+                    <i class="fa-solid fa-box text-red-500"></i> My Orders
+                </a>
+                <a href="<%= ctx %>/cart.jsp?view=admin" class="flex items-center gap-1 text-slate-300 hover:text-white transition bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">
                     <i class="fa-solid fa-chart-line text-emerald-400"></i> Dashboard
                 </a>
+                <% if (currentUser != null) { %>
+                    <span class="text-slate-400 hidden md:inline">Account Active</span>
+                    <a href="<%= ctx %>/auth/logout" class="text-red-400 hover:text-red-300 transition">Logout</a>
+                <% } else { %>
+                    <a href="<%= ctx %>/auth/login.jsp" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition">Sign In</a>
+                <% } %>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
-        
-        <!-- Hero Section -->
-        <div class="mb-10 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-slate-800 pb-8">
-            <div>
-                <span class="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
-                    Commercial Grade Steel & Heavy Gym Gear
-                </span>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">VT Fitness Equipment Vault</h1>
-                <p class="text-xs sm:text-sm text-slate-400 mt-2 max-w-2xl">
-                    Engineered for high-volume commercial training and home gyms across Tamil Nadu. All items dispatched with zero-damage insured freight courier.
-                </p>
-            </div>
-            
-            <div class="flex gap-3">
-                <a href="<%= ctx %>/cart.jsp?view=admin" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-bold text-slate-200 rounded-xl transition flex items-center gap-2">
-                    <i class="fa-solid fa-chart-pie text-emerald-400"></i> View Store Analytics
-                </a>
-            </div>
+
+        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 text-xs font-semibold scrollbar-none">
+            <a href="<%= ctx %>/catalog.jsp" 
+               class="px-4 py-2 rounded-lg transition <%= (selectedCategory == null || "All".equalsIgnoreCase(selectedCategory)) ? "bg-red-600 text-white" : "bg-slate-900 text-slate-400 hover:bg-slate-800" %>">
+               All Equipment (<%= fullCatalog.size() %>)
+            </a>
+            <a href="<%= ctx %>/catalog.jsp?category=Machines" 
+               class="px-4 py-2 rounded-lg transition <%= "Machines".equalsIgnoreCase(selectedCategory) ? "bg-red-600 text-white" : "bg-slate-900 text-slate-400 hover:bg-slate-800" %>">
+               Machines
+            </a>
+            <a href="<%= ctx %>/catalog.jsp?category=Free+Weights" 
+               class="px-4 py-2 rounded-lg transition <%= "Free Weights".equalsIgnoreCase(selectedCategory) ? "bg-red-600 text-white" : "bg-slate-900 text-slate-400 hover:bg-slate-800" %>">
+               Free Weights
+            </a>
+            <a href="<%= ctx %>/catalog.jsp?category=Benches" 
+               class="px-4 py-2 rounded-lg transition <%= "Benches".equalsIgnoreCase(selectedCategory) ? "bg-red-600 text-white" : "bg-slate-900 text-slate-400 hover:bg-slate-800" %>">
+               Benches
+            </a>
+            <a href="<%= ctx %>/catalog.jsp?category=Accessories" 
+               class="px-4 py-2 rounded-lg transition <%= "Accessories".equalsIgnoreCase(selectedCategory) ? "bg-red-600 text-white" : "bg-slate-900 text-slate-400 hover:bg-slate-800" %>">
+               Accessories
+            </a>
         </div>
 
-        <!-- Product Grid (12 Items) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <% for (Map<String, String> prod :
-                
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% for (Map<String, String> p : displayList) { 
+                String imgPath = p.get("img");
+                String encName = URLEncoder.encode(p.get("name"), "UTF-8");
+                String encImg = URLEncoder.encode(imgPath, "UTF-8");
+            %>
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition flex flex-col group">
+                    <div class="h-52 bg-slate-950 relative overflow-hidden flex items-center justify-center p-2">
+                        <img src="<%= imgPath %>" 
+                             alt="<%= p.get("name") %>" 
+                             class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-300"
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop';">
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-wider uppercase text-red-500 font-mono"><%= p.get("category") %></span>
+                            <h3 class="text-base font-bold text-white mt-1 group-hover:text-red-400 transition line-clamp-1"><%= p.get("name") %></h3>
+                            <p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed"><%= p.get("desc") %></p>
+                            
+                            <!-- Star Rating & Review Count -->
+                            <div class="flex items-center gap-1.5 mt-2">
+                                <div class="flex text-amber-400 text-xs">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star-half-stroke"></i>
+                                </div>
+                                <span class="text-[11px] font-semibold text-slate-400"><%= p.get("rating") %> (<%= p.get("reviews") %> reviews)</span>
+                            </div>
+                        </div>
+                        <div class="pt-5 mt-4 border-t border-slate-800/80 flex items-center justify-between gap-2">
+                            <div>
+                                <span class="text-base font-bold text-white">&#8377; <%= p.get("price") %></span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <a href="<%= ctx %>/cart.jsp?pId=<%= p.get("id") %>&pName=<%= encName %>&pPrice=<%= p.get("price") %>&pImg=<%= encImg %>" 
+                                   class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 font-semibold rounded-lg text-[11px] transition flex items-center gap-1 border border-slate-700">
+                                    <i class="fa-solid fa-cart-plus text-slate-400"></i> Add
+                                </a>
+                                <a href="<%= ctx %>/cart.jsp?pId=<%= p.get("id") %>&pName=<%= encName %>&pPrice=<%= p.get("price") %>&pImg=<%= encImg %>" 
+                                   class="px-3 py-1.5 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold rounded-lg text-[11px] transition flex items-center gap-1 shadow-lg shadow-red-600/25">
+                                    <i class="fa-solid fa-bolt"></i> Buy Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        &copy; 2026 VT Fitness Mart - Anna University Capstone Project
+    </footer>
+
+</body>
+</html>
