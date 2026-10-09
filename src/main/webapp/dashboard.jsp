@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
-<body class="flex flex-col min-h-full">
+<body class="flex flex-col min-h-full relative">
 
     <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -108,7 +108,6 @@
                     </div>
                 </div>
 
-                <!-- Verified Reviews Breakdown -->
                 <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
                     <h3 class="text-base font-bold text-white flex items-center gap-2 mb-4">
                         <i class="fa-solid fa-comments text-red-500"></i> Verified Customer Feedback
@@ -137,12 +136,11 @@
             </div>
 
         <% } else { %>
-            <!-- SHOPPING CART, QR CODE SCANNER & PRODUCT REVIEW -->
+            <!-- CHECKOUT VIEW -->
             <h1 class="text-2xl font-bold text-white mb-8">Your Shopping Cart & Order Summary</h1>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 
-                <!-- Left Column: Product Card & Review Section -->
                 <div class="lg:col-span-5 space-y-5">
                     <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 flex items-center gap-4">
                         <img src="<%= pImg.startsWith("http") ? pImg : (ctx + "/assets/images/" + pImg) %>" 
@@ -204,7 +202,6 @@
                     </div>
                 </div>
 
-                <!-- Right Column: Checkout & UPI QR Code -->
                 <div class="lg:col-span-7 bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-6">
                     <div class="border-b border-slate-800 pb-4 flex items-center justify-between">
                         <h2 class="text-base font-bold text-white flex items-center gap-2">
@@ -316,6 +313,73 @@
 
     </main>
 
+    <!-- ================= ZUPTO AI ASSISTANT WIDGET ================= -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <!-- Floating Toggle Button -->
+        <button id="zuptoToggleBtn" onclick="toggleZupto()" 
+                class="flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold rounded-full shadow-2xl shadow-red-600/40 border border-red-400/30 transition transform hover:scale-105 active:scale-95 text-xs">
+            <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+            </span>
+            <i class="fa-solid fa-robot text-sm"></i>
+            <span>Ask Zupto AI</span>
+        </button>
+
+        <!-- Zupto Chat Window -->
+        <div id="zuptoChatWindow" class="hidden absolute bottom-14 right-0 w-80 sm:w-96 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-red-950/60 p-3.5 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-full bg-red-600/20 border border-red-500/40 flex items-center justify-center text-red-500 font-bold text-xs">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-white flex items-center gap-1.5">
+                            Zupto AI Coach
+                            <span class="bg-emerald-500/20 text-emerald-400 text-[9px] font-semibold px-1.5 py-0.2 rounded">Online</span>
+                        </h4>
+                        <p class="text-[10px] text-slate-400">VT Mart Intelligent Equipment Advisor</p>
+                    </div>
+                </div>
+                <button onclick="toggleZupto()" class="text-slate-400 hover:text-white text-sm p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Messages Area -->
+            <div id="zuptoMessages" class="p-4 h-64 overflow-y-auto space-y-3 text-xs">
+                <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-slate-300">
+                    <p class="font-semibold text-red-400 mb-1">Vanakkam Vettri! 👋</p>
+                    <p>Naan dhaan **Zupto**, unga personal fitness AI advisor. Ungaloda workout goal or budget sonneenga-na, best equipment bundle suggest panren!</p>
+                </div>
+            </div>
+
+            <!-- Quick Suggestions -->
+            <div class="px-3 py-2 bg-slate-950/60 border-t border-slate-800/60 flex gap-1.5 overflow-x-auto text-[10px]">
+                <button onclick="sendQuickPrompt('Suggest a Home Gym Setup under 10k')" class="whitespace-nowrap px-2.5 py-1 bg-slate-800/80 hover:bg-slate-700 text-slate-300 rounded-full border border-slate-700">
+                    🏋️ Home Gym &lt; ₹10k
+                </button>
+                <button onclick="sendQuickPrompt('Best barbell for deadlifts and squats?')" class="whitespace-nowrap px-2.5 py-1 bg-slate-800/80 hover:bg-slate-700 text-slate-300 rounded-full border border-slate-700">
+                    💪 Best Barbell
+                </button>
+                <button onclick="sendQuickPrompt('Equipments for fat loss & cardio')" class="whitespace-nowrap px-2.5 py-1 bg-slate-800/80 hover:bg-slate-700 text-slate-300 rounded-full border border-slate-700">
+                    🔥 Fat Loss Gear
+                </button>
+            </div>
+
+            <!-- Input Bar -->
+            <div class="p-2.5 bg-slate-950 border-t border-slate-800 flex gap-2">
+                <input type="text" id="zuptoInput" placeholder="Ask Zupto anything about gym gear..." 
+                       onkeydown="if(event.key==='Enter') sendZuptoMsg()"
+                       class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-red-500">
+                <button onclick="sendZuptoMsg()" class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs transition">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500 mt-auto">
         &copy; 2026 VT Fitness Mart - Anna University Capstone Project
     </footer>
@@ -348,6 +412,55 @@
             }
             document.getElementById('reviewSuccess').classList.remove('hidden');
             reviewInput.value = '';
+        }
+
+        // ZUPTO AI LOGIC
+        function toggleZupto() {
+            const win = document.getElementById('zuptoChatWindow');
+            win.classList.toggle('hidden');
+        }
+
+        function sendQuickPrompt(promptText) {
+            document.getElementById('zuptoInput').value = promptText;
+            sendZuptoMsg();
+        }
+
+        function sendZuptoMsg() {
+            const input = document.getElementById('zuptoInput');
+            const txt = input.value.trim();
+            if (!txt) return;
+
+            const box = document.getElementById('zuptoMessages');
+            
+            // Append User Msg
+            const uDiv = document.createElement('div');
+            uDiv.className = 'bg-red-600/20 border border-red-500/30 rounded-xl p-2.5 text-slate-100 ml-6 text-right';
+            uDiv.innerText = txt;
+            box.appendChild(uDiv);
+            input.value = '';
+            box.scrollTop = box.scrollHeight;
+
+            // Generate Smart Zupto Recommendation
+            setTimeout(() => {
+                let reply = "";
+                const lower = txt.toLowerCase();
+
+                if (lower.includes("home gym") || lower.includes("10k") || lower.includes("budget")) {
+                    reply = "💡 **Zupto Recommended Bundle for Home Gym:**<br>• Cast Iron Kettlebell 16kg (₹2,799)<br>• Rubber Hex Dumbbell Set 20kg (₹4,499)<br>• Quick Lock Barbell Collars (₹799)<br>👉 *Total: ~₹8,097 (Well within ₹10k budget with free insured delivery!)*";
+                } else if (lower.includes("barbell") || lower.includes("deadlift") || lower.includes("squat")) {
+                    reply = "🏋️ **Zupto Barbell Pick:**<br>For heavy deadlifts & powerlifting, **Olympic Barbell 20kg (7ft)** is the gold standard (Hard chrome knurling, 1500lb capacity needle bearings). Pair it with nylon lock collars for safety!";
+                } else if (lower.includes("fat loss") || lower.includes("cardio") || lower.includes("weight loss")) {
+                    reply = "🔥 **Zupto Conditioning Pick:**<br>Combine high-rep **Kettlebell swings (16kg)** with **Battle Ropes** and jump intervals. High EPOC effect helps torch calories faster than conventional cardio!";
+                } else {
+                    reply = "⚡ **Zupto Analysis:** Based on your query, I recommend checking our Free Weights & Heavy Benches category. Our gear is built with commercial-grade 11-gauge steel for lifetime durability!";
+                }
+
+                const bDiv = document.createElement('div');
+                bDiv.className = 'bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-slate-300';
+                bDiv.innerHTML = "<p class='font-bold text-red-400 mb-1 flex items-center gap-1'><i class='fa-solid fa-bolt'></i> Zupto Recommendation:</p>" + reply;
+                box.appendChild(bDiv);
+                box.scrollTop = box.scrollHeight;
+            }, 500);
         }
     </script>
 </body>
