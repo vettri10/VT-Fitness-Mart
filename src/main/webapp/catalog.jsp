@@ -2,74 +2,140 @@
 <%@ page import="java.util.List, java.util.Map, java.util.ArrayList" %>
 <%
     String ctx = request.getContextPath();
-    String search = request.getParameter("search");
-    String category = request.getParameter("category");
 
-    // Mock catalog data if list is not passed from servlet
-    List<Map<String, String>> products = (List<Map<String, String>>) request.getAttribute("products");
-    if (products == null) {
-        products = new ArrayList<>();
-        
-        Map<String, String> p1 = new java.util.HashMap<>();
-        p1.put("id", "1");
-        p1.put("name", "Olympic Barbell 20kg (7ft)");
-        p1.put("category", "Free Weights");
-        p1.put("price", "7999.00");
-        p1.put("rating", "4.9");
-        p1.put("reviews", "48");
-        p1.put("image", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop");
-        products.add(p1);
+    List<Map<String, String>> products = new ArrayList<>();
+    
+    // 1
+    Map<String, String> p1 = new java.util.HashMap<>();
+    p1.put("id", "1");
+    p1.put("name", "Olympic Barbell 20kg (7ft)");
+    p1.put("category", "Free Weights");
+    p1.put("price", "7999.00");
+    p1.put("rating", "4.9");
+    p1.put("reviews", "48");
+    p1.put("image", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop");
+    products.add(p1);
 
-        Map<String, String> p2 = new java.util.HashMap<>();
-        p2.put("id", "2");
-        p2.put("name", "Rubber Hex Dumbbell Set 20kg");
-        p2.put("category", "Free Weights");
-        p2.put("price", "4499.00");
-        p2.put("rating", "4.8");
-        p2.put("reviews", "36");
-        p2.put("image", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop");
-        products.add(p2);
+    // 2
+    Map<String, String> p2 = new java.util.HashMap<>();
+    p2.put("id", "2");
+    p2.put("name", "Rubber Hex Dumbbell Set 20kg (Pair)");
+    p2.put("category", "Free Weights");
+    p2.put("price", "4499.00");
+    p2.put("rating", "4.8");
+    p2.put("reviews", "36");
+    p2.put("image", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop");
+    products.add(p2);
 
-        Map<String, String> p3 = new java.util.HashMap<>();
-        p3.put("id", "3");
-        p3.put("name", "Cast Iron Kettlebell 16kg");
-        p3.put("category", "Conditioning");
-        p3.put("price", "2799.00");
-        p3.put("rating", "4.9");
-        p3.put("reviews", "52");
-        p3.put("image", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop");
-        products.add(p3);
+    // 3
+    Map<String, String> p3 = new java.util.HashMap<>();
+    p3.put("id", "3");
+    p3.put("name", "Cast Iron Competition Kettlebell 16kg");
+    p3.put("category", "Conditioning");
+    p3.put("price", "2799.00");
+    p3.put("rating", "4.9");
+    p3.put("reviews", "52");
+    p3.put("image", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop");
+    products.add(p3);
 
-        Map<String, String> p4 = new java.util.HashMap<>();
-        p4.put("id", "4");
-        p4.put("name", "Adjustable Workout Bench (FID)");
-        p4.put("category", "Benches & Racks");
-        p4.put("price", "6499.00");
-        p4.put("rating", "4.7");
-        p4.put("reviews", "29");
-        p4.put("image", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop");
-        products.add(p4);
+    // 4
+    Map<String, String> p4 = new java.util.HashMap<>();
+    p4.put("id", "4");
+    p4.put("name", "Adjustable Commercial Workout Bench (FID)");
+    p4.put("category", "Benches & Racks");
+    p4.put("price", "6499.00");
+    p4.put("rating", "4.7");
+    p4.put("reviews", "29");
+    p4.put("image", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop");
+    products.add(p4);
 
-        Map<String, String> p5 = new java.util.HashMap<>();
-        p5.put("id", "5");
-        p5.put("name", "Heavy Duty Power Rack (11 Gauge)");
-        p5.put("category", "Benches & Racks");
-        p5.put("price", "18999.00");
-        p5.put("rating", "5.0");
-        p5.put("reviews", "19");
-        p5.put("image", "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop");
-        products.add(p5);
+    // 5
+    Map<String, String> p5 = new java.util.HashMap<>();
+    p5.put("id", "5");
+    p5.put("name", "Heavy Duty Power Rack (11 Gauge Steel)");
+    p5.put("category", "Benches & Racks");
+    p5.put("price", "18999.00");
+    p5.put("rating", "5.0");
+    p5.put("reviews", "19");
+    p5.put("image", "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop");
+    products.add(p5);
 
-        Map<String, String> p6 = new java.util.HashMap<>();
-        p6.put("id", "6");
-        p6.put("name", "Olympic Barbell Quick Lock Collars");
-        p6.put("category", "Accessories");
-        p6.put("price", "799.00");
-        p6.put("rating", "4.8");
-        p6.put("reviews", "64");
-        p6.put("image", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop");
-        products.add(p6);
-    }
+    // 6
+    Map<String, String> p6 = new java.util.HashMap<>();
+    p6.put("id", "6");
+    p6.put("name", "Olympic Barbell Quick Lock Collars (Pair)");
+    p6.put("category", "Accessories");
+    p6.put("price", "799.00");
+    p6.put("rating", "4.8");
+    p6.put("reviews", "64");
+    p6.put("image", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop");
+    products.add(p6);
+
+    // 7
+    Map<String, String> p7 = new java.util.HashMap<>();
+    p7.put("id", "7");
+    p7.put("name", "Olympic Bumper Weight Plates 20kg (Pair)");
+    p7.put("category", "Free Weights");
+    p7.put("price", "5999.00");
+    p7.put("rating", "4.9");
+    p7.put("reviews", "41");
+    p7.put("image", "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop");
+    products.add(p7);
+
+    // 8
+    Map<String, String> p8 = new java.util.HashMap<>();
+    p8.put("id", "8");
+    p8.put("name", "EZ Curl Barbell 4ft Chrome Finish");
+    p8.put("category", "Free Weights");
+    p8.put("price", "2499.00");
+    p8.put("rating", "4.8");
+    p8.put("reviews", "33");
+    p8.put("image", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop");
+    products.add(p8);
+
+    // 9
+    Map<String, String> p9 = new java.util.HashMap<>();
+    p9.put("id", "9");
+    p9.put("name", "Heavy Duty Battle Rope 15m (38mm Thick)");
+    p9.put("category", "Conditioning");
+    p9.put("price", "3299.00");
+    p9.put("rating", "4.9");
+    p9.put("reviews", "27");
+    p9.put("image", "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop");
+    products.add(p9);
+
+    // 10
+    Map<String, String> p10 = new java.util.HashMap<>();
+    p10.put("id", "10");
+    p10.put("name", "Commercial Squat Stand & Pull-up Station");
+    p10.put("category", "Benches & Racks");
+    p10.put("price", "12499.00");
+    p10.put("rating", "4.8");
+    p10.put("reviews", "15");
+    p10.put("image", "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop");
+    products.add(p10);
+
+    // 11
+    Map<String, String> p11 = new java.util.HashMap<>();
+    p11.put("id", "11");
+    p11.put("name", "Cast Iron Kettlebell 24kg (Heavy)");
+    p11.put("category", "Conditioning");
+    p11.put("price", "3999.00");
+    p11.put("rating", "5.0");
+    p11.put("reviews", "22");
+    p11.put("image", "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop");
+    products.add(p11);
+
+    // 12
+    Map<String, String> p12 = new java.util.HashMap<>();
+    p12.put("id", "12");
+    p12.put("name", "Leather Weightlifting Belt & Wrist Wraps");
+    p12.put("category", "Accessories");
+    p12.put("price", "1499.00");
+    p12.put("rating", "4.9");
+    p12.put("reviews", "58");
+    p12.put("image", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop");
+    products.add(p12);
 %>
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-slate-950 text-slate-100">
@@ -84,6 +150,12 @@
 </head>
 <body class="flex flex-col min-h-full relative">
 
+    <!-- Toast Notification -->
+    <div id="cartToast" class="fixed top-20 right-6 z-50 transform translate-y-[-100px] opacity-0 transition duration-300 pointer-events-none bg-slate-900 border border-emerald-500/40 text-emerald-400 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-xs">
+        <i class="fa-solid fa-circle-check text-base"></i>
+        <span id="toastMsg" class="font-semibold text-slate-200">Equipment added to cart!</span>
+    </div>
+
     <!-- Header Navigation -->
     <header class="sticky top-0 z-40 backdrop-blur-md bg-slate-950/80 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -96,8 +168,9 @@
                 <a href="<%= ctx %>/products" class="px-3 py-1.5 rounded-lg bg-red-600 text-white font-bold transition">
                     <i class="fa-solid fa-store"></i> Catalog
                 </a>
-                <a href="<%= ctx %>/cart.jsp" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition">
+                <a href="<%= ctx %>/cart.jsp" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition flex items-center gap-2">
                     <i class="fa-solid fa-cart-shopping text-red-500"></i> Cart
+                    <span id="cartCountBadge" class="bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full">0</span>
                 </a>
                 <a href="<%= ctx %>/cart.jsp?view=admin" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-chart-line text-emerald-400"></i> Dashboard
@@ -113,11 +186,11 @@
         <div class="mb-10 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-slate-800 pb-8">
             <div>
                 <span class="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
-                    Commercial Grade Steel & Gear
+                    Commercial Grade Steel & Heavy Gym Gear
                 </span>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">Heavy Duty Gym Equipment</h1>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">VT Fitness Equipment Vault</h1>
                 <p class="text-xs sm:text-sm text-slate-400 mt-2 max-w-2xl">
-                    Engineered for high performance, strength training, and commercial gyms across Tamil Nadu. Safe freight dispatch with zero transit damage.
+                    Engineered for high-volume commercial training and home gyms across Tamil Nadu. All items dispatched with zero-damage insured freight courier.
                 </p>
             </div>
             
@@ -128,8 +201,8 @@
             </div>
         </div>
 
-        <!-- Product Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Product Grid (12 Items) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <% for (Map<String, String> prod : products) { %>
                 <div class="bg-slate-900/60 border border-slate-800 hover:border-slate-700 rounded-2xl overflow-hidden transition flex flex-col justify-between group">
                     <div class="relative overflow-hidden aspect-video bg-slate-950">
@@ -142,7 +215,7 @@
                         </span>
                     </div>
 
-                    <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div class="p-4 flex-1 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-1.5 text-xs">
                                 <div class="text-amber-400 flex items-center gap-1 font-bold">
@@ -152,17 +225,19 @@
                                 </div>
                                 <span class="text-emerald-400 text-[10px] font-bold bg-emerald-500/10 px-2 py-0.5 rounded">In Stock</span>
                             </div>
-                            <h3 class="text-base font-bold text-white group-hover:text-red-400 transition"><%= prod.get("name") %></h3>
+                            <h3 class="text-sm font-bold text-white group-hover:text-red-400 transition line-clamp-1"><%= prod.get("name") %></h3>
+                            <p class="text-base font-extrabold text-white mt-2">&#8377; <%= prod.get("price") %></p>
                         </div>
 
-                        <div class="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                            <div>
-                                <span class="text-[10px] text-slate-400 uppercase font-semibold">Offer Price</span>
-                                <p class="text-lg font-extrabold text-white">&#8377; <%= prod.get("price") %></p>
-                            </div>
+                        <!-- Buttons: Add to Cart & Buy Now -->
+                        <div class="mt-4 pt-3 border-t border-slate-800/80 grid grid-cols-2 gap-2">
+                            <button onclick="addToCart('<%= prod.get("name").replace("'", "\\'") %>', '<%= prod.get("price") %>')"
+                                    class="py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 font-semibold rounded-xl text-xs transition flex items-center justify-center gap-1.5 border border-slate-700">
+                                <i class="fa-solid fa-cart-plus text-red-500"></i> Add to Cart
+                            </button>
                             <a href="<%= ctx %>/cart.jsp?pId=<%= prod.get("id") %>&pName=<%= java.net.URLEncoder.encode(prod.get("name"), "UTF-8") %>&pPrice=<%= prod.get("price") %>&pImg=<%= java.net.URLEncoder.encode(prod.get("image"), "UTF-8") %>" 
-                               class="px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md shadow-red-600/20">
-                                <i class="fa-solid fa-cart-plus"></i> Buy Now
+                               class="py-2 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-md shadow-red-600/20">
+                                <i class="fa-solid fa-bolt text-[11px]"></i> Buy Now
                             </a>
                         </div>
                     </div>
@@ -247,6 +322,27 @@
     </footer>
 
     <script>
+        let cartItems = 0;
+
+        function addToCart(name, price) {
+            cartItems++;
+            const badge = document.getElementById('cartCountBadge');
+            badge.innerText = cartItems;
+            badge.classList.add('animate-bounce');
+            setTimeout(() => badge.classList.remove('animate-bounce'), 600);
+
+            // Show Toast
+            const toast = document.getElementById('cartToast');
+            document.getElementById('toastMsg').innerText = name + ' added to cart!';
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-100px]', 'opacity-0');
+            }, 2500);
+        }
+
         function toggleZupto() {
             const win = document.getElementById('zuptoChatWindow');
             if (win) win.classList.toggle('hidden');
@@ -264,7 +360,6 @@
 
             const box = document.getElementById('zuptoMessages');
             
-            // User message
             const uDiv = document.createElement('div');
             uDiv.className = 'bg-red-600/20 border border-red-500/30 rounded-xl p-2.5 text-slate-100 ml-6 text-right';
             uDiv.innerText = txt;
@@ -272,7 +367,6 @@
             input.value = '';
             box.scrollTop = box.scrollHeight;
 
-            // Zupto Friendly Bot Response
             setTimeout(() => {
                 let reply = "";
                 const lower = txt.toLowerCase();
